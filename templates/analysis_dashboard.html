@@ -1,0 +1,1420 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Analysis Intelligence" %} — {% trans "KRISHI-VERSE AI" %}{% endblock %}
+
+{% block extra_head %}
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+<style>
+/* ── Dashboard Layout ─────────────────────────────────────────────────────── */
+.dash-section {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+.dash-section-header {
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.dash-section-header .icon-badge {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+}
+.dash-section-header h3 { margin: 0; font-size: 1.25rem; font-weight: 800; }
+.dash-section-header p  { margin: 0; font-size: 0.82rem; opacity: 0.75; }
+.farm-header  { background: linear-gradient(135deg, #0d3b23, #1a6b3c); color: #fff; }
+.mkt-header   { background: linear-gradient(135deg, #0d3b3b, #0e7373); color: #fff; }
+.dash-section-body  { padding: 1.75rem; }
+
+/* ── Result containers ─────────────────────────────────────────────────────── */
+.result-container {
+  background: #f8fffe;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  border: 1.5px solid #d1f7ea;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.result-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.mkt-result-container {
+  border-color: #d1f0f7;
+}
+
+/* ── Section divider ──────────────────────────────────────────────────────── */
+.section-divider {
+  text-align: center;
+  position: relative;
+  margin: 3rem 0;
+}
+.section-divider::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c8e6c9, #b2dfdb, #c8e6c9, transparent);
+}
+.scroll-btn {
+  position: relative; z-index: 1;
+  background: linear-gradient(135deg, #0d3b23, #0e7373);
+  color: #fff; border: none;
+  padding: 12px 32px; border-radius: 50px;
+  font-weight: 700; font-size: 0.95rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+}
+.scroll-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.2); }
+
+/* ── Loading overlay ──────────────────────────────────────────────────────── */
+.loading-overlay {
+  display: none;
+  text-align: center;
+  padding: 2.5rem;
+  background: #f8fffe;
+  border-radius: 16px;
+  margin-top: 1.5rem;
+  border: 1.5px dashed #a8d5c2;
+}
+.spinner-grow-custom { width: 3rem; height: 3rem; }
+
+/* ── Form inside dash ─────────────────────────────────────────────────────── */
+.dash-form-grid { display: grid; gap: 1rem; }
+@media (min-width: 768px) {
+  .dash-form-grid-2 { grid-template-columns: 1fr 1fr; }
+  .dash-form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* ── Mode pills ───────────────────────────────────────────────────────────── */
+.mode-pill {
+  display: inline-block; padding: 8px 18px; border-radius: 50px;
+  border: 2px solid #dee2e6; cursor: pointer;
+  transition: all 0.2s; font-weight: 600; font-size: 0.85rem;
+}
+.mode-pill:hover { border-color: #0e7373; }
+.mode-pill.active { background: #0e7373; color: #fff; border-color: #0e7373; }
+.farm-mode-pill.active { background: #1a6b3c; border-color: #1a6b3c; color: #fff; }
+.filter-pill-mkt {
+  display: inline-block; padding: 6px 14px; border-radius: 50px;
+  border: 1.5px solid #dee2e6; cursor: pointer; font-size: 0.82rem;
+  transition: all 0.2s;
+}
+.filter-pill-mkt.active { background: #0e7373; color: #fff; border-color: #0e7373; }
+
+/* ── Submit buttons ───────────────────────────────────────────────────────── */
+.btn-farm-submit  { background: linear-gradient(135deg,#0d3b23,#198754); color:#fff; border:none; }
+.btn-farm-submit:hover { background: linear-gradient(135deg,#198754,#0d3b23); color:#fff; }
+.btn-mkt-submit   { background: linear-gradient(135deg,#0d3b3b,#0e7373); color:#fff; border:none; }
+.btn-mkt-submit:hover { background: linear-gradient(135deg,#0e7373,#0d3b3b); color:#fff; }
+
+/* ── Sticky section nav ───────────────────────────────────────────────────── */
+.dash-sticky-nav {
+  position: sticky; top: 65px; z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e9f5ea;
+  padding: 10px 0; margin-bottom: 1.5rem;
+}
+.dash-nav-link {
+  padding: 7px 20px; border-radius: 50px; font-weight: 600; font-size: 0.88rem;
+  cursor: pointer; transition: all 0.2s; text-decoration: none; color: #444;
+  border: 1.5px solid transparent;
+}
+.dash-nav-link:hover { background: #e8f5e9; color: #1a6b3c; }
+.dash-nav-link.farm-active  { background: #1a6b3c; color: #fff; border-color: #1a6b3c; }
+.dash-nav-link.mkt-active   { background: #0e7373; color: #fff; border-color: #0e7373; }
+
+/* ── Soil hint ────────────────────────────────────────────────────────────── */
+.soil-hint { font-size: 0.78rem; color: #6c757d; margin-top: 4px; display: none; }
+
+/* ── Export / print controls ─────────────────────────────────────────────── */
+.export-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.btn-export-report {
+  background: linear-gradient(135deg, #212529, #495057);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.7rem 1.25rem;
+  font-weight: 700;
+}
+.btn-export-report:hover,
+.btn-export-report:focus {
+  background: linear-gradient(135deg, #111418, #343a40);
+  color: #fff;
+}
+.btn-export-report:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.report-choice-card {
+  border: 1.5px solid #dee2e6;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+.report-choice-card:hover {
+  border-color: #86b7fe;
+  background: #f8fbff;
+}
+.report-choice-card.active {
+  border-color: #0d6efd;
+  background: #eef5ff;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.08);
+}
+.report-choice-card.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #f8f9fa;
+}
+.report-choice-title {
+  font-weight: 800;
+  color: #0d1b0f;
+}
+.report-choice-sub {
+  font-size: 0.82rem;
+  color: #6c757d;
+}
+.export-status-note {
+  font-size: 0.84rem;
+  color: #6c757d;
+}
+.print-export-shell {
+  font-family: 'Inter', sans-serif;
+  color: #1a2e1a;
+}
+.pdf-render-host {
+  position: absolute;
+  left: -20000px;
+  top: 0;
+  width: 1200px;
+  background: #fff;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 1;
+}
+.pdf-render-host:empty {
+  display: none;
+}
+.print-cover-page {
+  min-height: 260mm;
+  padding: 28mm 18mm 20mm;
+  background: linear-gradient(180deg, #f8fff9 0%, #ffffff 40%, #eef8f1 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  page-break-after: always;
+}
+.print-cover-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.print-cover-brand {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #1a6b3c;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.print-cover-hero {
+  margin-top: 24px;
+}
+.print-cover-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #0d1b0f;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+.print-cover-subtitle {
+  font-size: 1.02rem;
+  color: #4f6654;
+  max-width: 760px;
+  line-height: 1.75;
+}
+.print-cover-choice {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.85rem 1.15rem;
+  border-radius: 14px;
+  background: #edf7ef;
+  color: #14532d;
+  font-weight: 700;
+}
+.print-cover-highlights {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+.print-cover-chip {
+  border: 1px solid #d9ece0;
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.8);
+}
+.print-cover-chip strong {
+  display: block;
+  color: #0d1b0f;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.print-cover-chip span {
+  color: #5f7463;
+  font-size: 0.82rem;
+}
+.print-cover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  color: #5f7463;
+  font-size: 0.86rem;
+}
+.print-logo-svg {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+.print-export-header {
+  border-bottom: 2px solid #dcefe0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+.print-export-title {
+  font-size: 1.9rem;
+  font-weight: 900;
+  margin-bottom: 0.25rem;
+}
+.print-export-meta {
+  color: #5f7463;
+  font-size: 0.92rem;
+}
+.print-export-section {
+  margin-bottom: 2rem;
+  break-inside: avoid;
+  page-break-before: always;
+}
+.print-export-section-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  color: #fff;
+}
+.print-export-section-title.farm { background: linear-gradient(135deg, #0d3b23, #1a6b3c); }
+.print-export-section-title.market { background: linear-gradient(135deg, #0d3b3b, #0e7373); }
+[data-export-ignore] { }
+
+@media print {
+  .modal,
+  .export-toolbar,
+  [data-export-ignore] {
+    display: none !important;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ─── Hero ──────────────────────────────────────────────────────────────────── -->
+<div class="hero-section py-4 mb-0" style="padding-top:50px!important;padding-bottom:40px!important">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7" data-aos="fade-right" data-aos-duration="700">
+        <div class="hero-badge">🧠 {% trans "Analysis Intelligence" %}</div>
+        <h1 class="hero-title mt-2 mb-3">
+          {% trans "Farm & Market" %}<br>
+          <span>{% trans "Intelligence Dashboard" %}</span>
+        </h1>
+        <p class="hero-subtitle">
+          {% trans "Analyse your specific crop and compare every crop & vegetable available in your state — all on one unified page. Two engines, one decision." %}
+        </p>
+      </div>
+      <div class="col-lg-5 mt-4 mt-lg-0" data-aos="fade-left" data-aos-duration="700">
+        <div class="row g-2 text-center">
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-3">🌾</div><small>{% trans "Farm Simulation" %}</small></div></div>
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-3">🥕</div><small>{% trans "Market Intelligence" %}</small></div></div>
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-3">📅</div><small>{% trans "5-Year Forecast" %}</small></div></div>
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-3">😊</div><small>{% trans "Emotional Outcome" %}</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:1.5rem;padding-bottom:3rem">
+
+  <!-- ─── Sticky mini-nav ───────────────────────────────────────────────────── -->
+  <div class="dash-sticky-nav">
+    <div class="container d-flex align-items-center gap-3 flex-wrap">
+      <span class="text-muted small fw-semibold me-2">{% trans "Jump to:" %}</span>
+      <a class="dash-nav-link farm-active" onclick="scrollToFarm(event)">🌾 {% trans "Farm Analysis" %}</a>
+      <a class="dash-nav-link" id="mktNavLink" onclick="scrollToMarket(event)">🥕 {% trans "Market Intelligence" %}</a>
+      <div class="ms-auto export-toolbar" data-export-ignore>
+        <span class="text-muted small d-none d-md-block">{% trans "Two engines · One decision" %}</span>
+        <button type="button" class="btn btn-export-report" id="openReportExportBtn" disabled>
+          <i class="bi bi-printer me-1"></i> {% trans "Print / PDF" %}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 1 — FARM ANALYSIS                                               -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="dash-section" id="farmSection" data-aos="fade-right" data-aos-duration="700" data-aos-delay="100">
+
+    <div class="dash-section-header farm-header">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon-badge" style="background:rgba(255,255,255,0.15)">🌾</div>
+        <div>
+          <h3>{% trans "Analyse Your Farm" %}</h3>
+          <p>{% trans "Detailed suitability, financial projection, risk analysis & government support for a specific crop" %}</p>
+        </div>
+      </div>
+      <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-2 d-none d-md-block">
+        Section 1
+      </span>
+    </div>
+
+    <div class="dash-section-body">
+      <form id="farmForm" novalidate>
+        {% csrf_token %}
+
+        <!-- Row 1 -->
+        <div class="dash-form-grid dash-form-grid-3 mb-3">
+          <div>
+            <label class="form-label fw-semibold small" for="id_farm_state">🗺 {% trans "State / UT" %}</label>
+            <select name="state" id="id_farm_state" class="form-select form-select-lg">
+              <option value="">{% trans "— Select State —" %}</option>
+              {% for val, label in farm_form.state.field.choices %}
+              {% if val %}<option value="{{ val }}">{{ label }}</option>{% endif %}
+              {% endfor %}
+            </select>
+            <div id="farmSoilHint" class="soil-hint"></div>
+          </div>
+          <div>
+            <label class="form-label fw-semibold small" for="id_farm_crop">🌿 {% trans "Crop" %}</label>
+            <select name="crop" id="id_farm_crop" class="form-select form-select-lg">
+              <option value="">{% trans "— Select Crop —" %}</option>
+              {% for val, label in farm_form.crop.field.choices %}
+              {% if val %}<option value="{{ val }}">{{ label }}</option>{% endif %}
+              {% endfor %}
+            </select>
+            <div class="soil-hint" id="farmCropHint" style="display:none"></div>
+          </div>
+          <div>
+            <label class="form-label fw-semibold small" for="id_farm_soil_type">🌱 {% trans "Soil Type" %}</label>
+            <select name="soil_type" id="id_farm_soil_type" class="form-select form-select-lg">
+              <option value="">{% trans "— Select Soil Type —" %}</option>
+              {% for val, label in farm_form.soil_type.field.choices %}
+              {% if val %}<option value="{{ val }}">{{ label }}</option>{% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="dash-form-grid dash-form-grid-3 mb-3">
+          <div>
+            <label class="form-label fw-semibold small">📐 {% trans "Land Size (Acres)" %}</label>
+            <input type="number" name="land_size_acres" class="form-control form-control-lg"
+                   placeholder="e.g. 2.5" step="any" min="0.1" max="10000" id="id_farm_land">
+          </div>
+          <div>
+            <label class="form-label fw-semibold small">💰 {% trans "Investment (₹)" %}</label>
+            <input type="number" name="investment_capacity" class="form-control form-control-lg"
+                   placeholder="e.g. 50000" step="any" min="100" id="id_farm_investment">
+          </div>
+          <div>
+            <label class="form-label fw-semibold small">💧 {% trans "Irrigation" %}</label>
+            <div class="d-flex gap-4 pt-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer">
+                <input type="radio" name="irrigation" value="yes" class="form-check-input">
+                <span class="small fw-semibold">{% trans "Available" %}</span>
+              </label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer">
+                <input type="radio" name="irrigation" value="no" class="form-check-input">
+                <span class="small fw-semibold">{% trans "Not Available" %}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div id="farmFormErrors" class="alert alert-danger d-none rounded-3"></div>
+
+        <button type="submit" class="btn btn-farm-submit btn-lg w-100 fw-bold py-3 rounded-3" id="farmSubmitBtn">
+          <span class="btn-text">🌾 {% trans "Analyse My Farm" %}</span>
+          <span class="spinner-border spinner-border-sm ms-2 d-none" id="farmSpinner"></span>
+        </button>
+      </form>
+
+      <!-- Loading -->
+      <div class="loading-overlay" id="farmLoading">
+        <div class="spinner-grow text-success spinner-grow-custom mb-3" role="status"></div>
+        <p class="fw-bold text-success mb-1">{% trans "Analysing your farm…" %}</p>
+        <small class="text-muted">{% trans "Running 10 intelligence engines" %}</small>
+      </div>
+
+      <!-- Result -->
+      <div class="result-container d-none" id="farmResult"></div>
+    </div>
+  </div>
+
+  <!-- ─── Divider + Scroll Button ─────────────────────────────────────────── -->
+  <div class="section-divider" data-aos="zoom-in" data-aos-duration="500">
+    <button class="scroll-btn" onclick="scrollToMarket(event)">
+      ⬇ {% trans "Scroll to Market Intelligence" %}
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 2 — MARKET INTELLIGENCE                                         -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="dash-section" id="marketSection" data-aos="fade-left" data-aos-duration="700" data-aos-delay="100">
+
+    <div class="dash-section-header mkt-header">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon-badge" style="background:rgba(255,255,255,0.15)">🥕</div>
+        <div>
+          <h3>{% trans "Analyse Crops & Vegetables" %}</h3>
+          <p>{% trans "Compare all available crops & vegetables in your state — ranked by profit, stability or risk" %}</p>
+        </div>
+      </div>
+      <span class="badge bg-info bg-opacity-25 text-info border border-info px-3 py-2 d-none d-md-block">
+        Section 2
+      </span>
+    </div>
+
+    <div class="dash-section-body">
+      <form id="marketForm" novalidate>
+        {% csrf_token %}
+
+        <!-- Row 1 -->
+        <div class="dash-form-grid dash-form-grid-3 mb-3">
+          <div>
+            <label class="form-label fw-semibold small" for="id_mkt_state">🗺 {% trans "State / UT" %}</label>
+            <select name="state" id="id_mkt_state" class="form-select form-select-lg">
+              <option value="">{% trans "— Select State —" %}</option>
+              {% for val, label in compare_form.state.field.choices %}
+              {% if val %}<option value="{{ val }}">{{ label }}</option>{% endif %}
+              {% endfor %}
+            </select>
+            <div class="soil-hint" id="mktStateHint"></div>
+          </div>
+          <div>
+            <label class="form-label fw-semibold small" for="id_mkt_soil">🌱 {% trans "Soil Type" %}</label>
+            <select name="soil_type" id="id_mkt_soil" class="form-select form-select-lg">
+              <option value="">{% trans "— Select Soil Type —" %}</option>
+              {% for val, label in compare_form.soil_type.field.choices %}
+              {% if val %}<option value="{{ val }}">{{ label }}</option>{% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="form-label fw-semibold small">📐 {% trans "Land Size (Acres)" %}</label>
+            <input type="number" name="land_size_acres" class="form-control form-control-lg"
+                   placeholder="e.g. 2.5" step="any" min="0.1" max="10000" id="id_mkt_land">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">💰 {% trans "Investment Capacity (₹)" %}</label>
+          <input type="number" name="investment_capacity" class="form-control form-control-lg"
+                 placeholder="e.g. 50000" step="any" min="100" id="id_mkt_investment">
+        </div>
+
+        <!-- Ranking Mode -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">⚙ {% trans "Ranking Mode" %}</label>
+          <div class="d-flex flex-wrap gap-2">
+            {% for val, label in compare_form.mode.field.choices %}
+            <label class="mode-pill {% if forloop.counter == 3 %}active{% endif %}"
+                   id="modeLabel_{{ forloop.counter0 }}"
+                   for="id_mkt_mode_{{ forloop.counter0 }}">
+              <input type="radio" name="mkt_mode" id="id_mkt_mode_{{ forloop.counter0 }}"
+                     value="{{ val }}" class="d-none mkt-mode-radio"
+                     {% if forloop.counter == 3 %}checked{% endif %}>
+              {% if val == "profit" %}💰{% elif val == "stable" %}🛡{% elif val == "balanced" %}⚖{% else %}🔒{% endif %}
+              {{ label }}
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Filter Type -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">🔍 {% trans "Show" %}</label>
+          <div class="d-flex flex-wrap gap-2" id="filterPills">
+            {% for val, label in compare_form.filter_type.field.choices %}
+            <label class="filter-pill-mkt {% if forloop.first %}active{% endif %}"
+                   id="filterLabel_{{ forloop.counter0 }}"
+                   for="id_mkt_filter_{{ forloop.counter0 }}">
+              <input type="radio" name="mkt_filter_type" id="id_mkt_filter_{{ forloop.counter0 }}"
+                     value="{{ val }}" class="d-none mkt-filter-radio"
+                     {% if forloop.first %}checked{% endif %}>
+              {{ label }}
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div id="marketFormErrors" class="alert alert-danger d-none rounded-3"></div>
+
+        <button type="submit" class="btn btn-mkt-submit btn-lg w-100 fw-bold py-3 rounded-3" id="marketSubmitBtn">
+          <span class="btn-text">🥕 {% trans "Analyse Crops & Vegetables" %}</span>
+          <span class="spinner-border spinner-border-sm ms-2 d-none" id="marketSpinner"></span>
+        </button>
+      </form>
+
+      <!-- Loading -->
+      <div class="loading-overlay" id="marketLoading">
+        <div class="spinner-grow text-info spinner-grow-custom mb-3" role="status"></div>
+        <p class="fw-bold text-info mb-1">{% trans "Comparing crops & vegetables…" %}</p>
+        <small class="text-muted">{% trans "Calculating suitability, profit & stability for all items" %}</small>
+      </div>
+
+      <!-- Result -->
+      <div class="result-container mkt-result-container d-none" id="marketResult"></div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ─── Print / PDF modal ───────────────────────────────────────────────────── -->
+<div class="modal fade" id="reportExportModal" tabindex="-1" aria-labelledby="reportExportModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h5 class="modal-title fw-bold" id="reportExportModalLabel">{% trans "Print or Save Analysis as PDF" %}</h5>
+          <p class="mb-0 text-muted small">{% trans "Choose which report you want to export." %}</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <div class="d-grid gap-3" id="reportChoiceGroup">
+          <label class="report-choice-card" data-choice-card for="exportChoiceFarm">
+            <input class="form-check-input me-2 export-choice-radio" type="radio" name="export_report_choice" id="exportChoiceFarm" value="farm">
+            <span class="report-choice-title">1. {% trans "Farm / Soil Prediction Report" %}</span>
+            <div class="report-choice-sub mt-1">{% trans "Download or print only the farm analysis, soil suitability, diagnosis, government help, and projections." %}</div>
+          </label>
+
+          <label class="report-choice-card" data-choice-card for="exportChoiceMarket">
+            <input class="form-check-input me-2 export-choice-radio" type="radio" name="export_report_choice" id="exportChoiceMarket" value="market">
+            <span class="report-choice-title">2. {% trans "Crop Prediction Report" %}</span>
+            <div class="report-choice-sub mt-1">{% trans "Download or print only the crop and vegetable comparison, rankings, market intelligence, and 5-year forecast." %}</div>
+          </label>
+
+          <label class="report-choice-card" data-choice-card for="exportChoiceBoth">
+            <input class="form-check-input me-2 export-choice-radio" type="radio" name="export_report_choice" id="exportChoiceBoth" value="both">
+            <span class="report-choice-title">3. {% trans "Both Reports Together" %}</span>
+            <div class="report-choice-sub mt-1">{% trans "Export both the soil/farm analysis and the crop prediction report in one PDF or print view." %}</div>
+          </label>
+        </div>
+        <div class="export-status-note mt-3" id="exportAvailabilityNote">
+          {% trans "Run at least one analysis to enable export." %}
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">{% trans "Close" %}</button>
+        <button type="button" class="btn btn-outline-dark rounded-pill px-4" id="printSelectedReportBtn">
+          <i class="bi bi-printer me-1"></i> {% trans "Print" %}
+        </button>
+        <button type="button" class="btn btn-success rounded-pill px-4" id="downloadSelectedPdfBtn">
+          <i class="bi bi-file-earmark-pdf me-1"></i> {% trans "Download PDF" %}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── AOS + Chart.js + Scripts ─────────────────────────────────────────────── -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+AOS.init({ once: true, easing: 'ease-out-cubic' });
+
+// ── Translated strings injected from Django — used by JS for dynamic text ──
+{% get_current_language as CURRENT_LANG %}
+const KV_LANG = "{{ CURRENT_LANG }}";   // e.g. "hi", "ta", "en"
+const KV_TRANS = {
+  analyseFarm      : "🌾 {% trans 'Analyse My Farm' %}",
+  analyseCrops     : "🥕 {% trans 'Analyse Crops & Vegetables' %}",
+  analysingFarm    : "{% trans 'Analysing your farm…' %}",
+  comparingCrops   : "{% trans 'Comparing crops & vegetables…' %}",
+  farmReportLabel  : "🌾 {% trans 'Farm / Soil Analysis Report' %}",
+  mktReportLabel   : "🥕 {% trans 'Crop & Vegetable Prediction Report' %}",
+  combinedLabel    : "📊 {% trans 'Combined Full Analysis Report' %}",
+  officialReport   : "{% trans 'Official Agricultural Analysis Report' %}",
+  printInstructions: "{% trans 'Press Ctrl+P (Win) or ⌘P (Mac) → choose Save as PDF' %}",
+  generatedOn      : "{% trans 'Generated on' %}",
+  selectState      : "{% trans '— Select State —' %}",
+  selectSoil       : "{% trans '— Select Soil Type —' %}",
+  cropsAvailable   : "{% trans 'crops/vegetables available in' %}",
+};
+
+// ── Smooth scroll helpers ──────────────────────────────────────────────────
+function scrollToFarm(e) {
+  if (e) e.preventDefault();
+  document.getElementById('farmSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function scrollToMarket(e) {
+  if (e) e.preventDefault();
+  document.getElementById('marketSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Sticky nav highlight on scroll ───────────────────────────────────────
+window.addEventListener('scroll', function() {
+  const farmTop  = document.getElementById('farmSection').getBoundingClientRect().top;
+  const mktTop   = document.getElementById('marketSection').getBoundingClientRect().top;
+  const mktLink  = document.getElementById('mktNavLink');
+  const farmLinks= document.querySelectorAll('.dash-nav-link');
+  if (mktTop < 200) {
+    farmLinks.forEach(l => l.classList.remove('farm-active'));
+    mktLink.classList.add('mkt-active');
+  } else {
+    mktLink.classList.remove('mkt-active');
+    farmLinks[0] && farmLinks[0].classList.add('farm-active');
+  }
+}, { passive: true });
+
+// ── Dynamic soil + item count for Market section ──────────────────────────
+const mktStateEl = document.getElementById('id_mkt_state');
+const mktSoilEl  = document.getElementById('id_mkt_soil');
+const mktHint    = document.getElementById('mktStateHint');
+
+if (mktStateEl) {
+  mktStateEl.addEventListener('change', function() {
+    const state = this.value;
+    if (!state) return;
+    mktHint.style.display = 'block';
+    mktHint.textContent = 'Loading…';
+    Promise.all([
+      fetch('/api/soil-types/?state='  + encodeURIComponent(state)).then(r => r.json()),
+      fetch('/api/state-crops/?state=' + encodeURIComponent(state)).then(r => r.json()),
+    ]).then(([soilData, cropData]) => {
+      rebuildSelect(mktSoilEl, soilData.soil_types,
+        s => s.charAt(0).toUpperCase() + s.slice(1), KV_TRANS.selectSoil);
+      mktHint.textContent =
+        '🌾 ' + cropData.crops.length + ' ' + KV_TRANS.cropsAvailable + ' ' + state;
+    }).catch(() => { mktHint.style.display = 'none'; });
+  });
+}
+
+// ── Mode & filter pill toggle ─────────────────────────────────────────────
+document.querySelectorAll('.mkt-mode-radio').forEach(r => {
+  r.addEventListener('change', function() {
+    document.querySelectorAll('[id^="modeLabel_"]').forEach(l => l.classList.remove('active'));
+    this.closest('label').classList.add('active');
+  });
+});
+document.querySelectorAll('.mkt-filter-radio').forEach(r => {
+  r.addEventListener('change', function() {
+    document.querySelectorAll('[id^="filterLabel_"]').forEach(l => l.classList.remove('active'));
+    this.closest('label').classList.add('active');
+  });
+});
+
+// ── Dynamic soil + crop filter for Farm section ───────────────────────────
+const farmStateEl = document.getElementById('id_farm_state');
+const farmCropEl  = document.getElementById('id_farm_crop');
+const farmSoilEl  = document.getElementById('id_farm_soil_type');
+const farmHint    = document.getElementById('farmSoilHint');
+
+function rebuildSelect(selectEl, items, labelFn, placeholder) {
+  const cur = selectEl.value;
+  selectEl.innerHTML = '<option value="">' + placeholder + '</option>';
+  items.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = labelFn(v);
+    if (v === cur) opt.selected = true;
+    selectEl.appendChild(opt);
+  });
+}
+
+if (farmStateEl) {
+  farmStateEl.addEventListener('change', function() {
+    const state = this.value;
+    if (!state) return;
+
+    // Update soil types
+    farmHint.style.display = 'block';
+    farmHint.textContent = 'Loading…';
+    Promise.all([
+      fetch('/api/soil-types/?state='  + encodeURIComponent(state)).then(r => r.json()),
+      fetch('/api/state-crops/?state=' + encodeURIComponent(state)).then(r => r.json()),
+    ]).then(([soilData, cropData]) => {
+      rebuildSelect(farmSoilEl, soilData.soil_types,
+        s => s.charAt(0).toUpperCase() + s.slice(1), KV_TRANS.selectSoil);
+      rebuildSelect(farmCropEl, cropData.crops,
+        c => c, KV_TRANS.selectState);
+      farmHint.style.display = 'block';
+      farmHint.textContent =
+        cropData.crops.length + ' crops · ' +
+        soilData.soil_types.length + ' soil types available in ' + state;
+    }).catch(() => { farmHint.style.display = 'none'; });
+  });
+}
+
+// ── Show result with animation ─────────────────────────────────────────────
+function showResult(containerId, html) {
+  const el = document.getElementById(containerId);
+  el.classList.remove('d-none', 'visible');
+  el.innerHTML = html;
+  void el.offsetWidth;           // force reflow
+  el.classList.add('visible');
+  updateExportAvailability();
+  setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+}
+
+// ── Print / PDF helpers ─────────────────────────────────────────────────────
+const openReportExportBtn    = document.getElementById('openReportExportBtn');
+const printSelectedReportBtn = document.getElementById('printSelectedReportBtn');
+const downloadSelectedPdfBtn = document.getElementById('downloadSelectedPdfBtn');
+const exportAvailabilityNote = document.getElementById('exportAvailabilityNote');
+const exportChoiceFarm       = document.getElementById('exportChoiceFarm');
+const exportChoiceMarket     = document.getElementById('exportChoiceMarket');
+const exportChoiceBoth       = document.getElementById('exportChoiceBoth');
+const exportChoiceCards      = document.querySelectorAll('[data-choice-card]');
+const reportExportModalEl    = document.getElementById('reportExportModal');
+let   reportExportModal      = null;
+
+function hasRenderedReport(containerId) {
+  const el = document.getElementById(containerId);
+  return !!(el && !el.classList.contains('d-none') && el.innerHTML.trim());
+}
+
+function setChoiceAvailability(inputEl, enabled) {
+  if (!inputEl) return;
+  inputEl.disabled = !enabled;
+  const card = document.querySelector(`[for="${inputEl.id}"]`);
+  if (card) card.classList.toggle('disabled', !enabled);
+  if (!enabled && inputEl.checked) inputEl.checked = false;
+}
+
+function updateChoiceCardStates() {
+  exportChoiceCards.forEach(card => {
+    const input = card.querySelector('.export-choice-radio');
+    card.classList.toggle('active', !!(input && input.checked && !input.disabled));
+  });
+}
+
+function updateExportAvailability() {
+  const hasFarm   = hasRenderedReport('farmResult');
+  const hasMarket = hasRenderedReport('marketResult');
+  const hasAny    = hasFarm || hasMarket;
+
+  if (openReportExportBtn) openReportExportBtn.disabled = !hasAny;
+
+  setChoiceAvailability(exportChoiceFarm,   hasFarm);
+  setChoiceAvailability(exportChoiceMarket, hasMarket);
+  setChoiceAvailability(exportChoiceBoth,   hasFarm && hasMarket);
+
+  if (hasFarm && hasMarket) {
+    exportChoiceBoth.checked = true;
+    exportAvailabilityNote.textContent = 'You can print or download the soil report, the crop prediction report, or both together.';
+  } else if (hasFarm) {
+    exportChoiceFarm.checked = true;
+    exportAvailabilityNote.textContent = 'Only the Farm / Soil report is ready. Run crop analysis too if you want both.';
+  } else if (hasMarket) {
+    exportChoiceMarket.checked = true;
+    exportAvailabilityNote.textContent = 'Only the Crop Prediction report is ready. Run farm analysis too if you want both.';
+  } else {
+    exportAvailabilityNote.textContent = 'Run at least one analysis to enable export.';
+  }
+
+  if (printSelectedReportBtn) printSelectedReportBtn.disabled = !hasAny;
+  if (downloadSelectedPdfBtn) downloadSelectedPdfBtn.disabled = !hasAny;
+  updateChoiceCardStates();
+}
+
+function getSelectedExportChoice() {
+  const sel = document.querySelector('input[name="export_report_choice"]:checked');
+  return sel ? sel.value : null;
+}
+
+// Convert live Chart.js canvases → embedded data:image/png <img> tags in clone
+function convertCanvasesToImages(sourceRoot, clonedRoot) {
+  const srcCanvases = sourceRoot.querySelectorAll('canvas');
+  const cloCanvases = clonedRoot.querySelectorAll('canvas');
+  cloCanvases.forEach((canvas, i) => {
+    const src = srcCanvases[i];
+    if (!src) { canvas.remove(); return; }
+    try {
+      const img = document.createElement('img');
+      img.src = src.toDataURL('image/png');
+      img.style.cssText = 'width:100%;height:auto;display:block;border-radius:12px;max-height:320px;object-fit:contain;margin:8px 0;';
+      canvas.replaceWith(img);
+    } catch (e) { canvas.remove(); }
+  });
+}
+
+function getChoiceLabel(c) {
+  return c === 'farm'   ? KV_TRANS.farmReportLabel
+       : c === 'market' ? KV_TRANS.mktReportLabel
+       : KV_TRANS.combinedLabel;
+}
+
+// Extract inner HTML of a result section with canvases converted to images
+function getSectionHtml(sourceId) {
+  const el = document.getElementById(sourceId);
+  if (!el || el.classList.contains('d-none') || !el.innerHTML.trim()) return '';
+  const clone = el.cloneNode(true);
+  clone.style.cssText = 'opacity:1!important;transform:none!important;visibility:visible!important;';
+  clone.querySelectorAll('[data-export-ignore], script, noscript').forEach(n => n.remove());
+  convertCanvasesToImages(el, clone);
+  return clone.innerHTML;
+}
+
+// Build the complete self-contained HTML document for printing/saving as PDF
+function buildPrintWindowHtml(choice, isPdf) {
+  const farmHtml   = (choice === 'farm'   || choice === 'both') ? getSectionHtml('farmResult')   : '';
+  const marketHtml = (choice === 'market' || choice === 'both') ? getSectionHtml('marketResult') : '';
+  const label   = getChoiceLabel(choice);
+  const now     = new Date();
+  // Use the active Django language for locale formatting
+  const pdfLocale = (KV_LANG && KV_LANG !== 'en') ? KV_LANG + '-IN' : 'en-IN';
+  const dateStr = now.toLocaleDateString(pdfLocale, { day: '2-digit', month: 'long', year: 'numeric' });
+  const timeStr = now.toLocaleTimeString(pdfLocale, { hour: '2-digit', minute: '2-digit' });
+
+  const farmSection   = farmHtml
+    ? `<section class="rpt-section"><div class="rpt-hdr rpt-hdr-green">${KV_TRANS.farmReportLabel}</div>${farmHtml}</section>` : '';
+  const marketSection = marketHtml
+    ? `<section class="rpt-section"><div class="rpt-hdr rpt-hdr-teal">${KV_TRANS.mktReportLabel}</div>${marketHtml}</section>` : '';
+
+  const logoSvg = `<svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d3b23"/><stop offset="100%" stop-color="#43a047"/>
+    </linearGradient></defs>
+    <rect x="8" y="8" width="104" height="104" rx="28" fill="url(#ag)"/>
+    <path d="M60 27c-16 11-25 26-25 42 0 13 9 24 25 24s25-11 25-24c0-16-9-31-25-42Z" fill="#fff" opacity=".18"/>
+    <path d="M61 29c-12 9-19 21-19 33 0 10 7 18 19 18s19-8 19-18c0-12-7-24-19-33Z" fill="#fff"/>
+    <path d="M60 34v46" stroke="#0d3b23" stroke-width="5" stroke-linecap="round"/>
+    <path d="M60 49c-9-2-14-8-16-15 8 1 15 5 16 15Z" fill="#66bb6a"/>
+    <path d="M60 58c10-2 15-8 17-15-8 1-15 5-17 15Z" fill="#81c784"/>
+  </svg>`;
+
+  const pdfBanner = isPdf ? `
+    <div class="pdf-banner no-print">
+      <span>✅ Report ready &nbsp;—&nbsp; Press <strong>Ctrl+P</strong> (Win) or <strong>⌘P</strong> (Mac), then choose <strong>Save as PDF</strong> as the printer.</span>
+      <button onclick="window.print()">🖨 Print / Save as PDF</button>
+    </div><div style="height:56px;" class="no-print"></div>` : '';
+
+  return `<!doctype html><html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KRISHI-VERSE AI — Analysis Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#1a2e1a;margin:0;padding:20px;}
+    .rpt-shell{max-width:960px;margin:0 auto;}
+
+    /* ── PDF hint banner ── */
+    .pdf-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#0d3b23;color:#fff;
+      padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-size:14px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pdf-banner button{background:#43a047;color:#fff;border:none;border-radius:8px;
+      padding:8px 18px;font-size:14px;font-weight:700;cursor:pointer;}
+
+    /* ── Premium Cover page ── */
+    .rpt-cover{
+      min-height:270mm;
+      background:linear-gradient(160deg,#020d05 0%,#041a0a 22%,#062e12 50%,#0a4a20 78%,#0d6b33 100%);
+      padding:24mm 22mm 20mm;
+      display:flex;flex-direction:column;justify-content:space-between;
+      page-break-after:always;position:relative;overflow:hidden;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* grid overlay */
+    .rpt-cover::before{content:'';position:absolute;inset:0;pointer-events:none;
+      background-image:linear-gradient(rgba(76,175,80,0.05) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(76,175,80,0.05) 1px,transparent 1px);
+      background-size:48px 48px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* subtle glow orb */
+    .rpt-cover::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;
+      background:radial-gradient(circle,rgba(67,160,71,0.12) 0%,transparent 70%);
+      top:-100px;right:-100px;pointer-events:none;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .rpt-cover-inner{position:relative;z-index:2;}
+    /* logo glass */
+    .rpt-cover-logo-wrap{display:inline-flex;align-items:center;justify-content:center;
+      width:90px;height:90px;border-radius:24px;
+      background:rgba(255,255,255,0.08);
+      border:1.5px solid rgba(255,255,255,0.15);
+      box-shadow:0 0 40px rgba(76,175,80,0.2),0 12px 40px rgba(0,0,0,0.4);
+      margin-bottom:20px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* ai badge */
+    .rpt-cover-ai-badge{display:inline-flex;align-items:center;gap:8px;
+      background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.30);
+      padding:6px 18px;border-radius:50px;
+      font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+      color:#81c784;margin-bottom:18px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .rpt-cover-ai-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;
+      box-shadow:0 0 8px rgba(76,175,80,0.9);display:inline-block;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* brand name */
+    .rpt-cover-brand-title{font-size:46px;font-weight:900;letter-spacing:4px;text-transform:uppercase;
+      color:#fff;line-height:1;margin-bottom:8px;
+      text-shadow:0 0 60px rgba(76,175,80,0.25);}
+    .rpt-cover-brand-title .ag-green{color:#4caf50;}
+    .rpt-cover-platform{font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+      color:rgba(255,255,255,0.45);margin-bottom:20px;}
+    /* official label */
+    .rpt-cover-report-label{display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+      padding:8px 22px;border-radius:50px;
+      font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+      color:rgba(255,255,255,0.65);margin-bottom:24px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* divider */
+    .rpt-cover-divider{width:160px;height:2px;
+      background:linear-gradient(90deg,transparent,#43a047,#00897b,transparent);
+      border-radius:2px;margin-bottom:20px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* desc card */
+    .rpt-cover-desc{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;padding:16px 20px;max-width:620px;
+      font-size:13px;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:24px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* choice badge */
+    .rpt-cover-badge{display:inline-flex;align-items:center;gap:10px;
+      background:rgba(76,175,80,0.18);border:1.5px solid rgba(76,175,80,0.35);
+      padding:11px 20px;border-radius:14px;
+      color:#a5d6a7;font-weight:800;font-size:14px;margin-bottom:20px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* tags row */
+    .rpt-cover-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+    .rpt-cover-tag{background:rgba(255,255,255,0.06);border:1px solid rgba(76,175,80,0.18);
+      color:rgba(255,255,255,0.45);font-size:11px;font-weight:700;
+      padding:4px 12px;border-radius:50px;letter-spacing:0.5px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    /* footer */
+    .rpt-cover-footer{display:flex;justify-content:space-between;
+      color:rgba(255,255,255,0.30);font-size:12px;
+      border-top:1px solid rgba(255,255,255,0.10);padding-top:12px;
+      position:relative;z-index:2;}
+
+    /* ── Report sections ── */
+    .rpt-section{page-break-before:always;margin-bottom:24px;padding-top:8px;}
+    .rpt-hdr{padding:13px 18px;border-radius:12px;color:#fff;font-size:17px;font-weight:800;
+      margin-bottom:18px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .rpt-hdr-green{background:linear-gradient(135deg,#0d3b23,#1a6b3c);}
+    .rpt-hdr-teal {background:linear-gradient(135deg,#014d40,#0e7373);}
+
+    /* ── Result container reset ── */
+    .result-container{opacity:1!important;transform:none!important;visibility:visible!important;}
+
+    /* ── Metric cards ── */
+    .metric-card{border-radius:14px;padding:1.2rem 1.3rem;color:#fff;overflow:hidden;
+      break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .metric-card .metric-value{font-size:1.45rem;font-weight:800;line-height:1.2;margin:6px 0 4px;}
+    .metric-card .metric-label{font-size:.74rem;opacity:.85;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+    .metric-card .metric-sub{font-size:.76rem;opacity:.75;margin-top:4px;}
+    .metric-card .metric-icon{font-size:1.7rem;opacity:.9;}
+    .mc-green {background:linear-gradient(135deg,#1a6b3c,#28a745);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .mc-blue  {background:linear-gradient(135deg,#1565c0,#1976d2);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .mc-gold  {background:linear-gradient(135deg,#b45309,#f59e0b);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .mc-teal  {background:linear-gradient(135deg,#00695c,#00897b);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .mc-purple{background:linear-gradient(135deg,#6a1b9a,#8e24aa);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .mc-red   {background:linear-gradient(135deg,#b71c1c,#e53935);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .mc-indigo{background:linear-gradient(135deg,#283593,#3949ab);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+    /* ── Suit hero ── */
+    .suit-hero{border-radius:18px;padding:2rem 1.6rem;
+      background:linear-gradient(135deg,#0d1b0f,#1a4a2e);color:#fff;
+      break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .suit-score-circle{width:75px;height:75px;border-radius:50%;display:flex;
+      align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;
+      border:3px solid rgba(255,255,255,.35);}
+
+    /* ── Badges ── */
+    .badge{display:inline-block;padding:.3em .65em;font-size:.78em;font-weight:700;border-radius:.35em;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-success  {background:#1a6b3c!important;color:#fff!important;}
+    .bg-warning  {background:#f59e0b!important;color:#1a1a00!important;}
+    .bg-danger   {background:#e53935!important;color:#fff!important;}
+    .bg-info     {background:#0288d1!important;color:#fff!important;}
+    .bg-primary  {background:#1565c0!important;color:#fff!important;}
+    .bg-secondary{background:#546e7a!important;color:#fff!important;}
+
+    /* ── Alerts ── */
+    .alert{padding:12px 16px;border-radius:10px;break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .alert-success{background:#e8f5e9!important;border:1px solid #a5d6a7;color:#1b5e20;}
+    .alert-warning{background:#fff8e1!important;border:1px solid #ffe082;color:#7c4800;}
+    .alert-danger {background:#ffebee!important;border:1px solid #ef9a9a;color:#7f0000;}
+    .alert-info   {background:#e3f2fd!important;border:1px solid #90caf9;color:#01579b;}
+
+    /* ── Progress ── */
+    .progress{height:10px;border-radius:5px;background:#e0e0e0;overflow:hidden;}
+    .progress-bar{height:100%;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-success.progress-bar{background:#28a745!important;}
+    .bg-warning.progress-bar{background:#ffc107!important;}
+    .bg-danger.progress-bar {background:#e53935!important;}
+
+    /* ── Subtle backgrounds ── */
+    .bg-success-subtle{background:#e8f5e9!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-warning-subtle{background:#fff8e1!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-danger-subtle {background:#ffebee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-info-subtle   {background:#e3f2fd!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-primary-subtle{background:#e8eaf6!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .bg-light         {background:#f8f9fa!important;}
+
+    /* ── Cards ── */
+    .card{border-radius:12px;border:1px solid #e0e0e0;overflow:hidden;break-inside:avoid;}
+    .card-header{padding:10px 14px;font-weight:700;}
+    .card-body{padding:13px 15px;}
+
+    /* ── Tables ── */
+    .table{width:100%;border-collapse:collapse;font-size:.88rem;}
+    .table th{background:#f0f4f0!important;font-weight:700;padding:8px 10px;
+      border:1px solid #dee2e6;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .table td{padding:7px 10px;border:1px solid #dee2e6;vertical-align:middle;}
+    .table-striped tbody tr:nth-child(odd) td{background:#f9fbf9!important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+    /* ── Misc ── */
+    .modal,.modal-backdrop,[data-export-ignore]{display:none!important;}
+    .d-none{display:none!important;}
+    .fw-bold{font-weight:700!important;}
+    .text-muted{color:#6c757d!important;}
+    .text-success{color:#1a6b3c!important;}
+    .text-danger {color:#e53935!important;}
+    .text-warning{color:#f59e0b!important;}
+    .text-center{text-align:center!important;}
+    .text-end{text-align:right!important;}
+    .small,.fs-sm{font-size:.85em;}
+    .border-0{border:0!important;}
+    .rounded,.rounded-2{border-radius:.375rem;}
+    .rounded-3{border-radius:.5rem;}
+    .w-100{width:100%;}
+    .overflow-hidden{overflow:hidden;}
+    .shadow-sm{box-shadow:0 1px 3px rgba(0,0,0,.08);}
+
+    /* Print layout */
+    @page{size:A4 portrait;margin:12mm 10mm;}
+    @media print{
+      .no-print,.no-print *{display:none!important;}
+      body{padding:0;}
+      .rpt-section{page-break-before:always;}
+      .rpt-cover{page-break-after:always;}
+      .metric-card,.suit-hero,.card,.alert,.badge,.rpt-hdr,.rpt-cover{
+        -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    }
+  </style>
+</head>
+<body>
+${pdfBanner}
+<div class="rpt-shell">
+
+  <!-- PREMIUM COVER PAGE -->
+  <div class="rpt-cover">
+    <div class="rpt-cover-inner">
+
+      <!-- AI status badge -->
+      <div class="rpt-cover-ai-badge">
+        <span class="rpt-cover-ai-dot"></span>
+        AI-Powered Agriculture Intelligence
+      </div>
+
+      <!-- Logo in glass card -->
+      <div style="margin-bottom:22px;">
+        <div class="rpt-cover-logo-wrap">
+          ${logoSvg}
+        </div>
+      </div>
+
+      <!-- Brand name -->
+      <div class="rpt-cover-brand-title">
+        <span class="ag-green">KRISHI</span>-VERSE&nbsp;<span class="ag-green">AI</span>
+      </div>
+      <div class="rpt-cover-platform">${KV_TRANS.farmReportLabel.includes('Farm') ? "{% trans 'Smart Farming Intelligence Platform' %}" : "{% trans 'Smart Farming Intelligence Platform' %}"}</div>
+
+      <!-- Official report label -->
+      <div style="margin-bottom:20px;">
+        <div class="rpt-cover-report-label">
+          &#x1F4C4; &nbsp;${KV_TRANS.officialReport}
+        </div>
+      </div>
+
+      <!-- Decorative divider -->
+      <div class="rpt-cover-divider"></div>
+
+      <!-- Description -->
+      <div class="rpt-cover-desc">
+        {% trans "AI-powered crop intelligence, soil analysis, yield forecasting and financial insights for data-driven farming decisions — covering every major crop, every Indian state." %}
+      </div>
+
+      <!-- Selected report badge -->
+      <div class="rpt-cover-badge">${label}</div>
+
+      <!-- Feature tags -->
+      <div class="rpt-cover-tags">
+        <span class="rpt-cover-tag">&#10022; {% trans "Crop Suitability" %}</span>
+        <span class="rpt-cover-tag">&#10022; {% trans "Financial Forecasting" %}</span>
+        <span class="rpt-cover-tag">&#10022; {% trans "Market Intelligence" %}</span>
+        <span class="rpt-cover-tag">&#10022; {% trans "Risk Analysis" %}</span>
+        <span class="rpt-cover-tag">&#10022; {% trans "Govt. Scheme Advisor" %}</span>
+        <span class="rpt-cover-tag">&#10022; {% trans "5-Year Projection" %}</span>
+      </div>
+
+    </div>
+    <div class="rpt-cover-footer">
+      <div>&#x1F4C5; ${KV_TRANS.generatedOn} ${dateStr} ${timeStr}</div>
+      <div>KRISHI-VERSE AI &middot; {% trans "Smart Farming Decision Platform" %}</div>
+    </div>
+  </div>
+
+  <!-- REPORT CONTENT -->
+  ${farmSection}
+  ${marketSection}
+
+</div>
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() { window.print(); }, ${isPdf ? 1500 : 900});
+  });
+<\/script>
+</body></html>`;
+}
+
+function printSelectedReport() {
+  const choice = getSelectedExportChoice();
+  if (!choice) { alert('Please select a report option first.'); return; }
+  const html = buildPrintWindowHtml(choice, false);
+  const w = window.open('', '_blank', 'width=1100,height=900');
+  if (!w) { alert('Pop-ups are blocked. Please allow pop-ups for this site and try again.'); return; }
+  w.document.open(); w.document.write(html); w.document.close(); w.focus();
+}
+
+function downloadSelectedReportPdf() {
+  const choice = getSelectedExportChoice();
+  if (!choice) { alert('Please select a report option first.'); return; }
+  const html = buildPrintWindowHtml(choice, true);
+  const w = window.open('', '_blank', 'width=1100,height=900');
+  if (!w) { alert('Pop-ups are blocked. Please allow pop-ups for this site and try again.'); return; }
+  w.document.open(); w.document.write(html); w.document.close(); w.focus();
+}
+
+if (openReportExportBtn) {
+  openReportExportBtn.addEventListener('click', () => {
+    updateExportAvailability();
+    if (!reportExportModal && reportExportModalEl && window.bootstrap) {
+      reportExportModal = new window.bootstrap.Modal(reportExportModalEl);
+    }
+    if (reportExportModal) reportExportModal.show();
+  });
+}
+
+document.querySelectorAll('.export-choice-radio').forEach(input => {
+  input.addEventListener('change', updateChoiceCardStates);
+});
+
+if (printSelectedReportBtn) printSelectedReportBtn.addEventListener('click', printSelectedReport);
+if (downloadSelectedPdfBtn) downloadSelectedPdfBtn.addEventListener('click', downloadSelectedReportPdf);
+
+updateExportAvailability();
+
+// ── Chart initializers (called after AJAX injection) ───────────────────────
+function initFarmCharts(cd) {
+  const yRupee = { scales: { y: { ticks: { callback: v => '₹' + v.toLocaleString('en-IN') } } } };
+  const base   = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+
+  const ic = document.getElementById('farmIncomeChart');
+  if (ic) new Chart(ic, {
+    type: 'line',
+    data: {
+      labels: cd.income_projection.labels,
+      datasets: [{
+        label: 'Net Profit (₹)',
+        data: cd.income_projection.data,
+        borderColor: '#198754', backgroundColor: 'rgba(25,135,84,0.12)',
+        fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: '#198754'
+      }]
+    },
+    options: { ...base, ...yRupee }
+  });
+
+  const rc = document.getElementById('farmRainfallChart');
+  if (rc) new Chart(rc, {
+    type: 'bar',
+    data: {
+      labels: cd.rainfall.labels,
+      datasets: [{ data: cd.rainfall.data, backgroundColor: 'rgba(13,110,253,0.65)', borderRadius: 5 }]
+    },
+    options: { ...base, scales: { y: { ticks: { callback: v => v + 'mm' } } } }
+  });
+}
+
+function initMarketCharts(cd) {
+  const palette = ['#198754','#0d6efd','#ffc107','#dc3545','#0dcaf0','#6f42c1','#fd7e14','#20c997','#e83e8c','#6610f2','#17a2b8','#343a40'];
+  const base    = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+  const yRupee  = { y: { ticks: { callback: v => '₹' + v.toLocaleString('en-IN') } } };
+
+  const pc = document.getElementById('mktProfitChart');
+  if (pc) new Chart(pc, {
+    type: 'bar',
+    data: {
+      labels: cd.labels,
+      datasets: [{ data: cd.profit,
+        backgroundColor: cd.profit.map(v => v >= 0 ? 'rgba(25,135,84,0.75)' : 'rgba(220,53,69,0.75)'),
+        borderRadius: 5 }]
+    },
+    options: { ...base, scales: yRupee }
+  });
+
+  const pj = document.getElementById('mktProjChart');
+  if (pj) new Chart(pj, {
+    type: 'bar',
+    data: {
+      labels: cd.labels,
+      datasets: [{ data: cd.proj_5yr, backgroundColor: palette, borderRadius: 5 }]
+    },
+    options: { ...base, scales: yRupee }
+  });
+}
+
+// ── FARM FORM AJAX ─────────────────────────────────────────────────────────
+document.getElementById('farmForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form   = this;
+  const btn    = document.getElementById('farmSubmitBtn');
+  const spinner= document.getElementById('farmSpinner');
+  const loading= document.getElementById('farmLoading');
+  const errDiv = document.getElementById('farmFormErrors');
+  const result = document.getElementById('farmResult');
+
+  // Reset state
+  errDiv.classList.add('d-none');
+  result.classList.add('d-none');
+  result.classList.remove('visible');
+  loading.style.display = 'block';
+  btn.disabled = true;
+  spinner.classList.remove('d-none');
+  form.querySelector('.btn-text').textContent = '{% trans "Analysing…" %}';
+
+  // Collect farm form fields explicitly (unique IDs prevent cross-form confusion)
+  const data = new FormData();
+  data.append('csrfmiddlewaretoken', form.querySelector('[name=csrfmiddlewaretoken]').value);
+  data.append('state',               document.getElementById('id_farm_state').value);
+  data.append('crop',                document.getElementById('id_farm_crop').value);
+  data.append('soil_type',           document.getElementById('id_farm_soil_type').value);
+  data.append('land_size_acres',     document.getElementById('id_farm_land').value);
+  data.append('investment_capacity', document.getElementById('id_farm_investment').value);
+  const irr = form.querySelector('[name=irrigation]:checked');
+  data.append('irrigation', irr ? irr.value : 'yes');
+
+  try {
+    const resp = await fetch('/ajax/farm/', {
+      method: 'POST',
+      body: data,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
+    const json = await resp.json();
+    loading.style.display = 'none';
+
+    if (json.success) {
+      showResult('farmResult', json.html);
+      // init charts after DOM is populated
+      setTimeout(() => initFarmCharts(json.chart_data), 50);
+    } else {
+      errDiv.innerHTML = Object.values(json.errors).flat().join('<br>');
+      errDiv.classList.remove('d-none');
+    }
+  } catch (err) {
+    loading.style.display = 'none';
+    errDiv.textContent = '{% trans "Server error. Please try again." %}';
+    errDiv.classList.remove('d-none');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add('d-none');
+    form.querySelector('.btn-text').textContent = KV_TRANS.analyseFarm;
+  }
+});
+
+// ── MARKET FORM AJAX ───────────────────────────────────────────────────────
+document.getElementById('marketForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form   = this;
+  const btn    = document.getElementById('marketSubmitBtn');
+  const spinner= document.getElementById('marketSpinner');
+  const loading= document.getElementById('marketLoading');
+  const errDiv = document.getElementById('marketFormErrors');
+  const result = document.getElementById('marketResult');
+
+  // Reset state
+  errDiv.classList.add('d-none');
+  result.classList.add('d-none');
+  result.classList.remove('visible');
+  loading.style.display = 'block';
+  btn.disabled = true;
+  spinner.classList.remove('d-none');
+  form.querySelector('.btn-text').textContent = '{% trans "Analysing…" %}';
+
+  // Build FormData — collect named fields from market form
+  const raw  = new FormData(form);
+  const data = new FormData();
+  data.append('csrfmiddlewaretoken', raw.get('csrfmiddlewaretoken'));
+  // state / soil_type / land / investment are standard names inside marketForm
+  data.append('state',               document.getElementById('id_mkt_state').value);
+  data.append('soil_type',           document.getElementById('id_mkt_soil').value);
+  data.append('land_size_acres',     document.getElementById('id_mkt_land').value);
+  data.append('investment_capacity', document.getElementById('id_mkt_investment').value);
+  data.append('mode',        raw.get('mkt_mode') || 'balanced');
+  data.append('filter_type', raw.get('mkt_filter_type') || 'All');
+
+  try {
+    const resp = await fetch('/ajax/market/', {
+      method: 'POST',
+      body: data,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
+    const json = await resp.json();
+    loading.style.display = 'none';
+
+    if (json.success) {
+      showResult('marketResult', json.html);
+      setTimeout(() => initMarketCharts(json.chart_data), 50);
+    } else {
+      errDiv.innerHTML = Object.values(json.errors).flat().join('<br>');
+      errDiv.classList.remove('d-none');
+    }
+  } catch (err) {
+    loading.style.display = 'none';
+    errDiv.textContent = '{% trans "Server error. Please try again." %}';
+    errDiv.classList.remove('d-none');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add('d-none');
+    form.querySelector('.btn-text').textContent = KV_TRANS.analyseCrops;
+  }
+});
+</script>
+{% endblock %}

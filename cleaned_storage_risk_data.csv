@@ -1,0 +1,7 @@
+crop_name,storage_life_days,cold_storage_required,storage_loss_percent,transportation_risk_score
+wheat,180,no,2,0.2
+rice,150,no,3,0.25
+cotton,200,no,1,0.15
+tomato,7,yes,25,0.8
+onion,60,yes,10,0.5
+potato,90,yes,8,0.45

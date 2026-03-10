@@ -1,0 +1,1086 @@
+# Hindi translations for KRISHI-VERSE AI
+# Copyright (C) 2024 Sahil
+# This file is distributed under the same license as the KRISHI-VERSE AI package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: KRISHI-VERSE AI 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# ── Branding ──────────────────────────────────────────────────────────────
+msgid "KRISHI-VERSE AI"
+msgstr "कृषि-वर्स एआई"
+
+msgid "Smart Farming Intelligence Platform"
+msgstr "स्मार्ट कृषि बुद्धिमत्ता मंच"
+
+msgid "Smart Farming Decision & Market Intelligence Platform"
+msgstr "स्मार्ट कृषि निर्णय और बाज़ार बुद्धिमत्ता मंच"
+
+msgid "Official Agricultural Analysis Report"
+msgstr "आधिकारिक कृषि विश्लेषण रिपोर्ट"
+
+msgid ""
+"AI-powered crop intelligence, soil analysis, yield forecasting and financial"
+" insights for data-driven farming decisions."
+msgstr ""
+"डेटा-संचालित कृषि निर्णयों के लिए एआई-संचालित फसल बुद्धिमत्ता, मृदा "
+"विश्लेषण, उपज पूर्वानुमान और वित्तीय अंतर्दृष्टि।"
+
+# ── Navigation ─────────────────────────────────────────────────────────────
+msgid "Home"
+msgstr "होम"
+
+msgid "Analysis Intelligence"
+msgstr "बुद्धिमत्ता विश्लेषण"
+
+msgid "Start Analysis"
+msgstr "विश्लेषण शुरू करें"
+
+msgid "See capabilities"
+msgstr "क्षमताएं देखें"
+
+msgid "Analyse Intelligence"
+msgstr "बुद्धिमत्ता का विश्लेषण करें"
+
+# ── Analysis Dashboard ─────────────────────────────────────────────────────
+msgid "Analysis Intelligence"
+msgstr "बुद्धिमत्ता विश्लेषण"
+
+msgid "Analyse Your Farm"
+msgstr "अपने खेत का विश्लेषण करें"
+
+msgid "Analyse Your Crop & Vegetables"
+msgstr "अपनी फसल और सब्जियों का विश्लेषण करें"
+
+msgid "State"
+msgstr "राज्य"
+
+msgid "Crop"
+msgstr "फसल"
+
+msgid "Soil Type"
+msgstr "मिट्टी का प्रकार"
+
+msgid "Land Size (Acres)"
+msgstr "भूमि का आकार (एकड़)"
+
+msgid "Investment Capacity (₹)"
+msgstr "निवेश क्षमता (₹)"
+
+msgid "Irrigation Available"
+msgstr "सिंचाई उपलब्ध"
+
+msgid "Yes"
+msgstr "हाँ"
+
+msgid "No"
+msgstr "नहीं"
+
+msgid "Analyse My Farm"
+msgstr "मेरे खेत का विश्लेषण करें"
+
+msgid "Analyse Crops & Vegetables"
+msgstr "फसलें और सब्जियां विश्लेषण करें"
+
+# ── Suitability levels ─────────────────────────────────────────────────────
+msgid "Suitable"
+msgstr "उपयुक्त"
+
+msgid "Moderate Risk"
+msgstr "मध्यम जोखिम"
+
+msgid "Moderate"
+msgstr "मध्यम"
+
+msgid "Not Recommended"
+msgstr "अनुशंसित नहीं"
+
+# ── Risk levels ────────────────────────────────────────────────────────────
+msgid "Low"
+msgstr "कम"
+
+msgid "High"
+msgstr "उच्च"
+
+# ── Emotion labels ─────────────────────────────────────────────────────────
+msgid "Happy"
+msgstr "खुश"
+
+msgid "Satisfied"
+msgstr "संतुष्ट"
+
+msgid "Concerned"
+msgstr "चिंतित"
+
+msgid "Neutral"
+msgstr "तटस्थ"
+
+msgid "Sad"
+msgstr "दुखी"
+
+# ── Emotion messages ───────────────────────────────────────────────────────
+msgid ""
+"Excellent choice! Your crop selection aligns well with the local climate and"
+" soil. High returns and stable income are expected. Your farming journey "
+"looks prosperous!"
+msgstr ""
+"उत्कृष्ट चुनाव! आपकी फसल चयन स्थानीय जलवायु और मिट्टी के साथ अच्छी तरह मेल "
+"खाती है। उच्च रिटर्न और स्थिर आय की उम्मीद है। आपकी कृषि यात्रा समृद्ध दिखती"
+" है!"
+
+msgid ""
+"Continue with the current crop plan. Invest in quality seeds and modern "
+"irrigation to maximise yield further."
+msgstr ""
+"वर्तमान फसल योजना जारी रखें। उपज को अधिकतम करने के लिए गुणवत्तापूर्ण बीज और "
+"आधुनिक सिंचाई में निवेश करें।"
+
+msgid ""
+"Your crop selection is acceptable but there are moderate risks. Implementing"
+" the suggested solutions will significantly improve your profitability and "
+"stability."
+msgstr ""
+"आपकी फसल चयन स्वीकार्य है लेकिन मध्यम जोखिम हैं। सुझाए गए समाधानों को लागू "
+"करने से आपकी लाभप्रदता और स्थिरता में उल्लेखनीय सुधार होगा।"
+
+msgid ""
+"Review the modern and traditional solutions provided. A small extra "
+"investment in soil health or irrigation can push you into the 'Happy' zone."
+msgstr ""
+"प्रदान किए गए आधुनिक और पारंपरिक समाधानों की समीक्षा करें। मिट्टी के "
+"स्वास्थ्य या सिंचाई में थोड़ा अतिरिक्त निवेश आपको 'खुश' क्षेत्र में ला सकता "
+"है।"
+
+msgid ""
+"This crop carries notable risks in your selected state. Income may be below "
+"expectations. Consider adopting suggested solutions or exploring alternative"
+" crops with better suitability."
+msgstr ""
+"इस फसल में आपके चुने हुए राज्य में उल्लेखनीय जोखिम है। आय उम्मीदों से कम हो "
+"सकती है। सुझाए गए समाधान अपनाने या बेहतर उपयुक्तता वाली वैकल्पिक फसलों की "
+"खोज करने पर विचार करें।"
+
+msgid ""
+"Strongly consider the recommended modern solutions. Alternatively, check "
+"other crops that are highly suitable for your state."
+msgstr ""
+"अनुशंसित आधुनिक समाधानों पर दृढ़ता से विचार करें। वैकल्पिक रूप से, अपने "
+"राज्य के लिए अत्यधिक उपयुक्त अन्य फसलों की जाँच करें।"
+
+msgid ""
+"This crop is not well-suited for your region and financial profile. High "
+"probability of financial loss. Immediate reconsideration of crop selection "
+"is strongly advised."
+msgstr ""
+"यह फसल आपके क्षेत्र और वित्तीय प्रोफाइल के लिए उपयुक्त नहीं है। वित्तीय "
+"नुकसान की उच्च संभावना है। फसल चयन पर तुरंत पुनर्विचार की दृढ़ता से सलाह दी "
+"जाती है।"
+
+msgid ""
+"Switch to a crop that is naturally suited to your state's climate. Use the "
+"suitability engine to compare alternative crops before investing."
+msgstr ""
+"ऐसी फसल पर स्विच करें जो आपके राज्य की जलवायु के लिए प्राकृतिक रूप से "
+"उपयुक्त हो। निवेश करने से पहले वैकल्पिक फसलों की तुलना के लिए उपयुक्तता इंजन"
+" का उपयोग करें।"
+
+# ── Market emotion messages ────────────────────────────────────────────────
+msgid "No suitable crops found for this region with given investment."
+msgstr "दी गई निवेश के साथ इस क्षेत्र के लिए कोई उपयुक्त फसल नहीं मिली।"
+
+msgid ""
+"Excellent! %(crop)s is a highly profitable and stable choice for your "
+"region."
+msgstr ""
+"उत्कृष्ट! %(crop)s आपके क्षेत्र के लिए एक अत्यधिक लाभदायक और स्थिर विकल्प "
+"है।"
+
+msgid "Good choice! %(crop)s offers solid returns with manageable risk."
+msgstr ""
+"अच्छा विकल्प! %(crop)s प्रबंधनीय जोखिम के साथ ठोस रिटर्न प्रदान करता है।"
+
+msgid ""
+"%(crop)s offers moderate returns. Consider the suggested solutions to "
+"improve profitability."
+msgstr ""
+"%(crop)s मध्यम रिटर्न प्रदान करता है। लाभप्रदता में सुधार के लिए सुझाए गए "
+"समाधानों पर विचार करें।"
+
+msgid ""
+"Caution advised. %(crop)s has moderate risk. Review the loss-risk crops "
+"carefully."
+msgstr ""
+"सावधानी बरतने की सलाह। %(crop)s में मध्यम जोखिम है। हानि-जोखिम वाली फसलों की"
+" सावधानीपूर्वक समीक्षा करें।"
+
+msgid ""
+"High risk detected. Most crops face challenges in this region. Explore "
+"modern solutions."
+msgstr ""
+"उच्च जोखिम का पता चला। इस क्षेत्र में अधिकांश फसलों को चुनौतियाँ हैं। आधुनिक"
+" समाधान तलाशें।"
+
+# ── Homepage Hero ──────────────────────────────────────────────────────────
+msgid "AI-Powered Agriculture Intelligence Platform"
+msgstr "एआई-संचालित कृषि बुद्धिमत्ता प्लेटफॉर्म"
+
+msgid ""
+"AI-powered crop intelligence, soil analysis, yield forecasting and financial"
+" insights for data-driven farming decisions — covering every major crop, "
+"every Indian state."
+msgstr ""
+"डेटा-संचालित कृषि निर्णयों के लिए एआई-संचालित फसल बुद्धिमत्ता, मृदा "
+"विश्लेषण, उपज पूर्वानुमान और वित्तीय अंतर्दृष्टि — हर प्रमुख फसल, हर भारतीय "
+"राज्य।"
+
+# ── Feature tags ───────────────────────────────────────────────────────────
+msgid "Crop Suitability"
+msgstr "फसल उपयुक्तता"
+
+msgid "Financial Forecasting"
+msgstr "वित्तीय पूर्वानुमान"
+
+msgid "Market Intelligence"
+msgstr "बाज़ार बुद्धिमत्ता"
+
+msgid "Risk Analysis"
+msgstr "जोखिम विश्लेषण"
+
+msgid "Govt. Scheme Advisor"
+msgstr "सरकारी योजना सलाहकार"
+
+msgid "5-Year Projection"
+msgstr "5-वर्षीय अनुमान"
+
+# ── Feature section ─────────────────────────────────────────────────────────
+msgid "Intelligence Platform"
+msgstr "बुद्धिमत्ता प्लेटफॉर्म"
+
+msgid "8 AI Engines Working Together"
+msgstr "8 एआई इंजन मिलकर काम कर रहे हैं"
+
+msgid ""
+"Every analysis runs across multiple engines simultaneously — giving you a "
+"complete picture of your farming opportunity in seconds."
+msgstr ""
+"हर विश्लेषण एक साथ कई इंजनों पर चलता है — कुछ सेकंड में आपके कृषि अवसर की "
+"पूरी तस्वीर देता है।"
+
+# ── Crops section ──────────────────────────────────────────────────────────
+msgid "Supported Crops"
+msgstr "समर्थित फसलें"
+
+msgid "Every Major Crop. Every State."
+msgstr "हर प्रमुख फसल। हर राज्य।"
+
+msgid ""
+"From wheat in Punjab to turmeric in Kerala — our platform knows what grows "
+"best where."
+msgstr ""
+"पंजाब में गेहूँ से लेकर केरल में हल्दी तक — हमारा प्लेटफॉर्म जानता है कि "
+"कहाँ क्या सबसे अच्छा उगता है।"
+
+# ── How It Works section ───────────────────────────────────────────────────
+msgid "Simple Process"
+msgstr "सरल प्रक्रिया"
+
+msgid "How It Works"
+msgstr "यह कैसे काम करता है"
+
+msgid "Three steps from farm details to full intelligence report."
+msgstr "खेत के विवरण से पूरी बुद्धिमत्ता रिपोर्ट तक तीन चरण।"
+
+msgid "Enter Farm or State Details"
+msgstr "खेत या राज्य का विवरण दर्ज करें"
+
+msgid ""
+"Select your state, crop, land size, soil type, irrigation availability and "
+"investment capacity."
+msgstr ""
+"अपना राज्य, फसल, भूमि का आकार, मिट्टी का प्रकार, सिंचाई उपलब्धता और निवेश "
+"क्षमता चुनें।"
+
+msgid "AI Analyses Climate + Market + Risk"
+msgstr "एआई जलवायु + बाज़ार + जोखिम का विश्लेषण करता है"
+
+msgid ""
+"10 AI engines process climate match, soil fit, financial ROI, price "
+"volatility, and government schemes simultaneously."
+msgstr ""
+"10 एआई इंजन एक साथ जलवायु मिलान, मिट्टी की उपयुक्तता, वित्तीय आरओआई, मूल्य "
+"अस्थिरता और सरकारी योजनाओं की प्रक्रिया करते हैं।"
+
+msgid "Get Best Crop & Profit Projection"
+msgstr "सर्वश्रेष्ठ फसल और लाभ अनुमान प्राप्त करें"
+
+msgid ""
+"Receive a ranked comparison with 5-year income forecast, government subsidy "
+"breakdown, and emotional confidence score."
+msgstr ""
+"5-वर्षीय आय पूर्वानुमान, सरकारी सब्सिडी विवरण और भावनात्मक आत्मविश्वास स्कोर"
+" के साथ रैंक की तुलना प्राप्त करें।"
+
+msgid "Start Analysis Now"
+msgstr "अभी विश्लेषण शुरू करें"
+
+# ── Bottom CTA ─────────────────────────────────────────────────────────────
+msgid "Ready to Start?"
+msgstr "शुरू करने के लिए तैयार हैं?"
+
+msgid "Your Most Profitable"
+msgstr "आपका सबसे लाभदायक"
+
+msgid "Crop Decision Starts Here"
+msgstr "फसल निर्णय यहाँ से शुरू होता है"
+
+msgid ""
+"No signup. No cost. Just enter your farm details and get a complete AI-"
+"powered farming intelligence report instantly."
+msgstr ""
+"कोई साइनअप नहीं। कोई लागत नहीं। बस अपने खेत का विवरण दर्ज करें और तुरंत पूरी"
+" एआई-संचालित कृषि बुद्धिमत्ता रिपोर्ट प्राप्त करें।"
+
+msgid ""
+"Covers 15+ crops · 36 states · 5-year forecast · Government scheme guide"
+msgstr "15+ फसलें · 36 राज्य · 5-वर्षीय पूर्वानुमान · सरकारी योजना गाइड"
+
+# ── Page titles ────────────────────────────────────────────────────────────
+msgid "Analyse Crop & Vegetables"
+msgstr "फसल और सब्जियों का विश्लेषण करें"
+
+msgid "Analysis"
+msgstr "विश्लेषण"
+
+msgid "Crop Comparison Results"
+msgstr "फसल तुलना परिणाम"
+
+# ── Footer ─────────────────────────────────────────────────────────────────
+msgid "Data-driven insights for India's 140 million farming households"
+msgstr "भारत के 14 करोड़ कृषक परिवारों के लिए डेटा-संचालित अंतर्दृष्टि"
+
+msgid "Made by"
+msgstr "द्वारा निर्मित"
+
+msgid "Farm & Market"
+msgstr "खेत और बाजार"
+
+msgid "Intelligence Dashboard"
+msgstr "बुद्धिमत्ता डैशबोर्ड"
+
+msgid ""
+"Analyse your specific crop and compare every crop & vegetable available in "
+"your state — all on one unified page. Two engines, one decision."
+msgstr ""
+"अपनी विशिष्ट फसल का विश्लेषण करें और अपने राज्य में उपलब्ध हर फसल और सब्जी "
+"की तुलना करें — सब एक पृष्ठ पर। दो इंजन, एक निर्णय।"
+
+msgid "Farm Simulation"
+msgstr "खेत सिमुलेशन"
+
+msgid "5-Year Forecast"
+msgstr "5-वर्षीय पूर्वानुमान"
+
+msgid "Emotional Outcome"
+msgstr "भावनात्मक परिणाम"
+
+msgid "Jump to:"
+msgstr "पर जाएं:"
+
+msgid "Farm Analysis"
+msgstr "खेत विश्लेषण"
+
+msgid "Two engines · One decision"
+msgstr "दो इंजन · एक निर्णय"
+
+msgid "Print / PDF"
+msgstr "प्रिंट / PDF"
+
+msgid ""
+"Detailed suitability, financial projection, risk analysis & government "
+"support for a specific crop"
+msgstr ""
+"एक विशिष्ट फसल के लिए विस्तृत उपयुक्तता, वित्तीय अनुमान, जोखिम विश्लेषण और "
+"सरकारी सहायता"
+
+msgid "State / UT"
+msgstr "राज्य / केंद्र शासित प्रदेश"
+
+msgid "— Select State —"
+msgstr "— राज्य चुनें —"
+
+msgid "— Select Crop —"
+msgstr "— फसल चुनें —"
+
+msgid "— Select Soil Type —"
+msgstr "— मिट्टी का प्रकार चुनें —"
+
+msgid "Investment (₹)"
+msgstr "निवेश (₹)"
+
+msgid "Irrigation"
+msgstr "सिंचाई"
+
+msgid "Available"
+msgstr "उपलब्ध"
+
+msgid "Not Available"
+msgstr "उपलब्ध नहीं"
+
+msgid "Analysing your farm…"
+msgstr "आपके खेत का विश्लेषण हो रहा है…"
+
+msgid "Running 10 intelligence engines"
+msgstr "10 बुद्धिमत्ता इंजन चल रहे हैं"
+
+msgid "Scroll to Market Intelligence"
+msgstr "बाजार बुद्धिमत्ता पर स्क्रॉल करें"
+
+msgid ""
+"Compare all available crops & vegetables in your state — ranked by profit, "
+"stability or risk"
+msgstr ""
+"अपने राज्य में उपलब्ध सभी फसलों और सब्जियों की तुलना करें — लाभ, स्थिरता या "
+"जोखिम के अनुसार रैंक किया गया"
+
+msgid "Ranking Mode"
+msgstr "रैंकिंग मोड"
+
+msgid "Show"
+msgstr "दिखाएं"
+
+msgid "Comparing crops & vegetables…"
+msgstr "फसलों और सब्जियों की तुलना की जा रही है…"
+
+msgid "Calculating suitability, profit & stability for all items"
+msgstr "सभी वस्तुओं के लिए उपयुक्तता, लाभ और स्थिरता की गणना की जा रही है"
+
+msgid "Print or Save Analysis as PDF"
+msgstr "विश्लेषण को PDF के रूप में प्रिंट या सहेजें"
+
+msgid "Choose which report you want to export."
+msgstr "चुनें कि आप कौन सी रिपोर्ट निर्यात करना चाहते हैं।"
+
+msgid "Farm / Soil Prediction Report"
+msgstr "खेत / मिट्टी भविष्यवाणी रिपोर्ट"
+
+msgid ""
+"Download or print only the farm analysis, soil suitability, diagnosis, "
+"government help, and projections."
+msgstr ""
+"केवल खेत विश्लेषण, मिट्टी की उपयुक्तता, निदान, सरकारी सहायता और अनुमान "
+"डाउनलोड या प्रिंट करें।"
+
+msgid "Crop Prediction Report"
+msgstr "फसल भविष्यवाणी रिपोर्ट"
+
+msgid ""
+"Download or print only the crop and vegetable comparison, rankings, market "
+"intelligence, and 5-year forecast."
+msgstr ""
+"केवल फसल और सब्जी तुलना, रैंकिंग, बाजार बुद्धिमत्ता और 5-वर्षीय पूर्वानुमान "
+"डाउनलोड या प्रिंट करें।"
+
+msgid "Both Reports Together"
+msgstr "दोनों रिपोर्ट एक साथ"
+
+msgid ""
+"Export both the soil/farm analysis and the crop prediction report in one PDF"
+" or print view."
+msgstr ""
+"मिट्टी/खेत विश्लेषण और फसल भविष्यवाणी रिपोर्ट दोनों को एक PDF या प्रिंट व्यू"
+" में निर्यात करें।"
+
+msgid "Run at least one analysis to enable export."
+msgstr "निर्यात सक्षम करने के लिए कम से कम एक विश्लेषण चलाएं।"
+
+msgid "Close"
+msgstr "बंद करें"
+
+msgid "Print"
+msgstr "प्रिंट"
+
+msgid "Download PDF"
+msgstr "PDF डाउनलोड करें"
+
+msgid "Farm / Soil Analysis Report"
+msgstr "खेत / मिट्टी विश्लेषण रिपोर्ट"
+
+msgid "Crop & Vegetable Prediction Report"
+msgstr "फसल और सब्जी भविष्यवाणी रिपोर्ट"
+
+msgid "Combined Full Analysis Report"
+msgstr "संयुक्त पूर्ण विश्लेषण रिपोर्ट"
+
+msgid "Generated on"
+msgstr "तारीख"
+
+msgid "crops/vegetables available in"
+msgstr "फसलें/सब्जियाँ उपलब्ध हैं"
+
+msgid "Analysing…"
+msgstr "विश्लेषण हो रहा है…"
+
+msgid "Server error. Please try again."
+msgstr "सर्वर त्रुटि। कृपया पुनः प्रयास करें।"
+
+msgid "Smart Farming Decision Platform"
+msgstr "स्मार्ट खेती निर्णय प्लेटफॉर्म"
+
+msgid "humidity"
+msgstr "आर्द्रता"
+
+msgid "Soil"
+msgstr "मिट्टी"
+
+msgid "acres"
+msgstr "एकड़"
+
+msgid "Investment"
+msgstr "निवेश"
+
+msgid "utilized"
+msgstr "उपयोग किया"
+
+msgid "Revenue"
+msgstr "आय"
+
+msgid "Net Profit"
+msgstr "शुद्ध लाभ"
+
+msgid "acre"
+msgstr "एकड़"
+
+msgid "ROI"
+msgstr "निवेश पर वापसी"
+
+msgid "Break-even"
+msgstr "ब्रेक-ईवन"
+
+msgid "Revenue Components"
+msgstr "आय घटक"
+
+msgid "Market Price"
+msgstr "बाजार मूल्य"
+
+msgid "quintal"
+msgstr "क्विंटल"
+
+msgid "MSP (Govt. Floor)"
+msgstr "MSP (सरकारी न्यूनतम मूल्य)"
+
+msgid "Effective Price Used"
+msgstr "प्रभावी मूल्य उपयोग किया"
+
+msgid "Crop Revenue"
+msgstr "फसल आय"
+
+msgid "Govt. Support Added"
+msgstr "सरकारी सहायता जोड़ी"
+
+msgid "Total Effective Income"
+msgstr "कुल प्रभावी आय"
+
+msgid "Risk + Break-Even Analysis"
+msgstr "जोखिम + ब्रेक-ईवन विश्लेषण"
+
+msgid "Failure Probability"
+msgstr "विफलता संभावना"
+
+msgid "Risk Level"
+msgstr "जोखिम स्तर"
+
+msgid "Break-Even Price"
+msgstr "ब्रेक-ईवन मूल्य"
+
+msgid "Cost per Hectare"
+msgstr "प्रति हेक्टेयर लागत"
+
+msgid "Est. Yield Loss Value"
+msgstr "अनुमानित उपज हानि मूल्य"
+
+msgid "Insurance Payout"
+msgstr "बीमा भुगतान"
+
+msgid "Final Loss After Insurance"
+msgstr "बीमा के बाद अंतिम हानि"
+
+msgid "5-Year Income Projection (₹)"
+msgstr "5-वर्षीय आय अनुमान (₹)"
+
+msgid "Rainfall History (mm)"
+msgstr "वर्षा इतिहास (मिमी)"
+
+msgid "Year-by-Year Earnings Forecast"
+msgstr "वर्ष-दर-वर्ष आय पूर्वानुमान"
+
+msgid "Year"
+msgstr "वर्ष"
+
+msgid "Projected Profit (₹)"
+msgstr "अनुमानित लाभ (₹)"
+
+msgid "Cumulative (₹)"
+msgstr "संचयी (₹)"
+
+msgid "vs This Year"
+msgstr "इस वर्ष बनाम"
+
+msgid "Outlook"
+msgstr "दृष्टिकोण"
+
+msgid "Base Year"
+msgstr "आधार वर्ष"
+
+msgid "Growth"
+msgstr "वृद्धि"
+
+msgid "Stable"
+msgstr "स्थिर"
+
+msgid "3-Year Total"
+msgstr "3-वर्षीय कुल"
+
+msgid "Avg"
+msgstr "औसत"
+
+msgid "yr"
+msgstr "वर्ष"
+
+msgid "stable"
+msgstr "स्थिर"
+
+msgid "5-Year Total"
+msgstr "5-वर्षीय कुल"
+
+msgid "Growth rate"
+msgstr "वृद्धि दर"
+
+msgid "Suitability Breakdown"
+msgstr "उपयुक्तता विवरण"
+
+msgid "Government Intelligence — How Schemes Boost Your Revenue"
+msgstr "सरकारी बुद्धिमत्ता — योजनाएं आपकी आय कैसे बढ़ाती हैं"
+
+msgid "Total Subsidy"
+msgstr "कुल सब्सिडी"
+
+msgid "year"
+msgstr "वर्ष"
+
+msgid "Max Insurance"
+msgstr "अधिकतम बीमा"
+
+msgid "Crop Covered"
+msgstr "फसल कवर"
+
+msgid "Subsidy Breakdown"
+msgstr "सब्सिडी विवरण"
+
+msgid "Fertilizer"
+msgstr "उर्वरक"
+
+msgid "Seeds"
+msgstr "बीज"
+
+msgid "Active Government Schemes for"
+msgstr "के लिए सक्रिय सरकारी योजनाएं"
+
+msgid "Scheme Name"
+msgstr "योजना का नाम"
+
+msgid "How It Helps"
+msgstr "यह कैसे मदद करती है"
+
+msgid "Direct Benefit"
+msgstr "प्रत्यक्ष लाभ"
+
+msgid "Revenue Impact"
+msgstr "आय प्रभाव"
+
+msgid "No specific schemes found"
+msgstr "कोई विशिष्ट योजना नहीं मिली"
+
+msgid "Without Govt. Support"
+msgstr "सरकारी सहायता के बिना"
+
+msgid "added"
+msgstr "जोड़ा"
+
+msgid "With Govt. Support"
+msgstr "सरकारी सहायता के साथ"
+
+msgid "Crop Diagnosis"
+msgstr "फसल निदान"
+
+msgid "No issues detected"
+msgstr "कोई समस्या नहीं मिली"
+
+msgid "is well suited to"
+msgstr "के लिए अच्छी तरह उपयुक्त है"
+
+msgid "climate and soil conditions."
+msgstr "जलवायु और मिट्टी की स्थिति।"
+
+msgid "Modern Solution"
+msgstr "आधुनिक समाधान"
+
+msgid "Extra Cost"
+msgstr "अतिरिक्त लागत"
+
+msgid "Yield Boost"
+msgstr "उपज वृद्धि"
+
+msgid "ROI Recovery"
+msgstr "निवेश वापसी"
+
+msgid "years"
+msgstr "वर्ष"
+
+msgid "Revised Profit"
+msgstr "संशोधित लाभ"
+
+msgid "Traditional Solution"
+msgstr "पारंपरिक समाधान"
+
+msgid "Cost Level"
+msgstr "लागत स्तर"
+
+msgid "3-Year Earnings"
+msgstr "3-वर्षीय आय"
+
+msgid "5-Year Earnings"
+msgstr "5-वर्षीय आय"
+
+msgid "Stability Score"
+msgstr "स्थिरता स्कोर"
+
+msgid "Farmer Outcome"
+msgstr "किसान परिणाम"
+
+msgid "Mode"
+msgstr "मोड"
+
+msgid "Good"
+msgstr "अच्छा"
+
+msgid "Risk"
+msgstr "जोखिम"
+
+msgid "Analysed in"
+msgstr "में विश्लेषण किया"
+
+msgid "Best Choice"
+msgstr "सर्वश्रेष्ठ विकल्प"
+
+msgid "Runner-Up"
+msgstr "उपविजेता"
+
+msgid "Avoid — High Risk"
+msgstr "बचें — उच्च जोखिम"
+
+msgid "Net Profit Comparison (₹)"
+msgstr "शुद्ध लाभ तुलना (₹)"
+
+msgid "5-Year Cumulative Earnings (₹)"
+msgstr "5-वर्षीय संचयी आय (₹)"
+
+msgid "Full Comparison"
+msgstr "पूर्ण तुलना"
+
+msgid "items available in this region"
+msgstr "इस क्षेत्र में उपलब्ध वस्तुएं"
+
+msgid "Crop / Veg"
+msgstr "फसल / सब्जी"
+
+msgid "Type"
+msgstr "प्रकार"
+
+msgid "Climate Fit"
+msgstr "जलवायु फिट"
+
+msgid "Profit (₹)"
+msgstr "लाभ (₹)"
+
+msgid "ROI%"
+msgstr "निवेश वापसी%"
+
+msgid "Volatility"
+msgstr "अस्थिरता"
+
+msgid "MSP"
+msgstr "न्यूनतम समर्थन मूल्य"
+
+msgid "Demand"
+msgstr "मांग"
+
+msgid "3yr (₹)"
+msgstr "3 वर्ष (₹)"
+
+msgid "5yr (₹)"
+msgstr "5 वर्ष (₹)"
+
+msgid "Temp Dev"
+msgstr "तापमान विचलन"
+
+msgid "Verdict"
+msgstr "फैसला"
+
+msgid "Avoid"
+msgstr "बचें"
+
+msgid "Best"
+msgstr "सर्वश्रेष्ठ"
+
+msgid "2nd"
+msgstr "दूसरा"
+
+msgid "No items found for"
+msgstr "के लिए कोई वस्तु नहीं मिली"
+
+msgid "with selected filters."
+msgstr "चयनित फिल्टर के साथ।"
+
+msgid "5-Year Earnings Forecast — Top Crops in"
+msgstr "5-वर्षीय आय पूर्वानुमान — शीर्ष फसलें"
+
+msgid "5yr Total"
+msgstr "5 वर्ष कुल"
+
+msgid "Trend"
+msgstr "प्रवृत्ति"
+
+msgid "High Risk"
+msgstr "उच्च जोखिम"
+
+msgid "Government Role — How Schemes Boost Farmer Revenue in"
+msgstr "सरकारी भूमिका — में किसान आय को बढ़ावा देने वाली योजनाएं"
+
+msgid "Items Analysed"
+msgstr "वस्तुओं का विश्लेषण"
+
+msgid "in"
+msgstr "में"
+
+msgid "Profitable Options"
+msgstr "लाभदायक विकल्प"
+
+msgid "positive returns"
+msgstr "सकारात्मक रिटर्न"
+
+msgid "PM-KISAN Bonus"
+msgstr "PM-KISAN बोनस"
+
+msgid "guaranteed / year"
+msgstr "गारंटीशुदा / वर्ष"
+
+msgid "Max PMFBY Cover"
+msgstr "अधिकतम PMFBY कवर"
+
+msgid "crop loss insured"
+msgstr "फसल हानि बीमाकृत"
+
+msgid "Stability"
+msgstr "स्थिरता"
+
+msgid "5yr"
+msgstr "5 वर्ष"
+
+msgid "Press Ctrl+P (Win) or ⌘P (Mac) → choose Save as PDF"
+msgstr "Ctrl+P (Win) या ⌘P (Mac) दबाएं → Save as PDF चुनें"
+
+msgid "Critical"
+msgstr "गंभीर"
+
+msgid "None"
+msgstr "कोई नहीं"
+
+msgid "Low Rainfall"
+msgstr "कम वर्षा"
+
+msgid ""
+"State rainfall (%(actual)s mm) is below crop minimum (%(minimum)s mm). "
+"Deficit: %(deficit)s%%."
+msgstr ""
+"राज्य की वर्षा (%(actual)s मिमी) फसल के न्यूनतम (%(minimum)s मिमी) से कम है।"
+" कमी: %(deficit)s%%।"
+
+msgid "Excess Rainfall"
+msgstr "अधिक वर्षा"
+
+msgid ""
+"State rainfall (%(actual)s mm) exceeds crop maximum (%(maximum)s mm). "
+"Excess: %(excess)s%%."
+msgstr ""
+"राज्य की वर्षा (%(actual)s मिमी) फसल के अधिकतम (%(maximum)s मिमी) से अधिक "
+"है। अतिरिक्त: %(excess)s%%।"
+
+msgid "High Temperature"
+msgstr "उच्च तापमान"
+
+msgid ""
+"Average temperature (%(actual)s°C) exceeds crop maximum (%(maximum)s°C) by "
+"%(diff)s°C."
+msgstr ""
+"औसत तापमान (%(actual)s°C) फसल के अधिकतम (%(maximum)s°C) से %(diff)s°C अधिक "
+"है।"
+
+msgid "Low Temperature"
+msgstr "कम तापमान"
+
+msgid ""
+"Average temperature (%(actual)s°C) is below crop minimum (%(minimum)s°C) by "
+"%(diff)s°C."
+msgstr ""
+"औसत तापमान (%(actual)s°C) फसल के न्यूनतम (%(minimum)s°C) से %(diff)s°C कम "
+"है।"
+
+msgid "High Humidity"
+msgstr "उच्च आर्द्रता"
+
+msgid ""
+"Humidity (%(actual)s%%) exceeds crop maximum (%(maximum)s%%). Increases "
+"fungal disease risk."
+msgstr ""
+"आर्द्रता (%(actual)s%%) फसल के अधिकतम (%(maximum)s%%) से अधिक है। कवक रोग का"
+" खतरा बढ़ता है।"
+
+msgid "Low Humidity"
+msgstr "कम आर्द्रता"
+
+msgid ""
+"Humidity (%(actual)s%%) is below crop minimum (%(minimum)s%%). Increases "
+"water stress."
+msgstr ""
+"आर्द्रता (%(actual)s%%) फसल के न्यूनतम (%(minimum)s%%) से कम है। जल तनाव "
+"बढ़ता है।"
+
+msgid "Soil pH Too High"
+msgstr "मिट्टी का pH अधिक"
+
+msgid ""
+"Soil pH (%(ph)s) is alkaline. Crop needs pH %(min_ph)s–%(max_ph)s. Nutrient "
+"lock-up likely."
+msgstr ""
+"मिट्टी का pH (%(ph)s) क्षारीय है। फसल को pH %(min_ph)s–%(max_ph)s चाहिए।"
+
+msgid "Soil pH Too Low"
+msgstr "मिट्टी का pH कम"
+
+msgid ""
+"Soil pH (%(ph)s) is acidic. Crop needs pH %(min_ph)s–%(max_ph)s. Aluminum "
+"toxicity risk."
+msgstr ""
+"मिट्टी का pH (%(ph)s) अम्लीय है। फसल को pH %(min_ph)s–%(max_ph)s चाहिए।"
+
+msgid "Poor Soil Nutrients"
+msgstr "मिट्टी में पोषक तत्वों की कमी"
+
+msgid ""
+"Soil nitrogen is low. Crop yield will be significantly limited without "
+"fertiliser input."
+msgstr "मिट्टी में नाइट्रोजन कम है। उर्वरक के बिना उपज काफी सीमित होगी।"
+
+msgid "Soil Type Mismatch"
+msgstr "मिट्टी का प्रकार बेमेल"
+
+msgid ""
+"Soil type in %(state)s does not match crop requirements. Ideal soils: "
+"%(soils)s."
+msgstr ""
+"%(state)s में मिट्टी का प्रकार फसल की आवश्यकताओं से मेल नहीं खाता। आदर्श "
+"मिट्टी: %(soils)s।"
+
+msgid "No Major Issues"
+msgstr "कोई बड़ी समस्या नहीं"
+
+msgid "All key parameters are within acceptable range for this crop."
+msgstr "इस फसल के लिए सभी प्रमुख मापदंड स्वीकार्य सीमा में हैं।"
+
+msgid "₹6,000/year direct income support to all landholding farmers"
+msgstr "सभी भूमिधारक किसानों को ₹6,000/वर्ष प्रत्यक्ष आय सहायता"
+
+msgid "₹6,000/year"
+msgstr "₹6,000/वर्ष"
+
+msgid ""
+"Crop insurance with low premium and high coverage against natural calamities"
+msgstr "प्राकृतिक आपदाओं के विरुद्ध कम प्रीमियम और उच्च कवरेज वाला फसल बीमा"
+
+msgid "Up to 90% crop loss covered"
+msgstr "90% तक फसल हानि कवर"
+
+msgid "Free soil testing and nutrient recommendations to improve yield"
+msgstr "उपज सुधारने के लिए मुफ्त मिट्टी परीक्षण और पोषक तत्व अनुशंसाएं"
+
+msgid "Free soil analysis + nutrient advice"
+msgstr "मुफ्त मिट्टी विश्लेषण + पोषक सलाह"
+
+msgid "Short-term credit at 4-7% interest rate for farm expenses"
+msgstr "खेत के खर्च के लिए 4-7% ब्याज दर पर अल्पकालिक ऋण"
+
+msgid "Low-interest farm credit"
+msgstr "कम ब्याज खेत ऋण"
+
+msgid ""
+"Special support for rice cultivation - improved seeds, demos, and training"
+msgstr "चावल की खेती के लिए विशेष सहायता - उन्नत बीज, प्रदर्शन और प्रशिक्षण"
+
+msgid "Seed subsidy + training"
+msgstr "बीज सब्सिडी + प्रशिक्षण"
+
+msgid ""
+"Support for wheat cultivation with better seed varieties and technologies"
+msgstr "बेहतर बीज किस्मों और तकनीकों के साथ गेहूं की खेती के लिए सहायता"
+
+msgid "Seed & technology support"
+msgstr "बीज और तकनीक सहायता"
+
+msgid "Interest-free loans for sugarcane cultivation and cane development"
+msgstr "गन्ने की खेती के लिए ब्याज मुक्त ऋण"
+
+msgid "Zero-interest development loan"
+msgstr "शून्य ब्याज विकास ऋण"
+
+msgid "Improved cotton varieties, pest management, and ginning support"
+msgstr "उन्नत कपास किस्में, कीट प्रबंधन और जिनिंग सहायता"
+
+msgid "Better seed + pest support"
+msgstr "बेहतर बीज + कीट सहायता"
+
+msgid "Support for oilseed crops including soybean cultivation technology"
+msgstr "सोयाबीन सहित तिलहन फसलों के लिए सहायता"
+
+msgid "Seed & tech subsidy"
+msgstr "बीज और तकनीक सब्सिडी"
+
+msgid "Oilseed cultivation support with seed subsidy and demonstrations"
+msgstr "बीज सब्सिडी और प्रदर्शन के साथ तिलहन खेती सहायता"
+
+msgid "Seed subsidy + demo"
+msgstr "बीज सब्सिडी + प्रदर्शन"
+
+msgid "Support for mustard cultivation under oilseed mission"
+msgstr "तिलहन मिशन के अंतर्गत सरसों की खेती के लिए सहायता"
+
+msgid "Seed & fertiliser support"
+msgstr "बीज और उर्वरक सहायता"
+
+msgid "Climate"
+msgstr "जलवायु"
+
+msgid "Rainfall"
+msgstr "वर्षा"
+
+msgid "Temperature"
+msgstr "तापमान"
+
+msgid "Soil pH"
+msgstr "मिट्टी pH"

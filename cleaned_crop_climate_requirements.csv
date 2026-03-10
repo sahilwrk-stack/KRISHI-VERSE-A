@@ -1,0 +1,6 @@
+crop,min_rainfall_mm,max_rainfall_mm,min_temperature_c,max_temperature_c,ideal_soil_type,ideal_ph_min,ideal_ph_max,ideal_humidity_min,ideal_humidity_max
+wheat,500,1000,10,25,loamy,6.0,7.5,50,70
+rice,1000,2000,20,35,clay loam,5.5,6.5,70,90
+maize,600,1200,18,32,loamy,5.5,7.0,60,80
+bajra,300,600,25,40,sandy,6.0,8.0,40,60
+sugarcane,750,1500,20,38,clay loam,6.5,7.5,65,85

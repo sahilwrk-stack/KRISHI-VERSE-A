@@ -1,0 +1,5 @@
+crop,subsidy_type,subsidy_amount,eligibility_condition
+rice,fertilizer subsidy,2000,per hectare
+wheat,seed subsidy,1500,per hectare
+all,pm-kisan,6000,per farmer per year
+sugarcane,irrigation subsidy,5000,per hectare

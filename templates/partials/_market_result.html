@@ -1,0 +1,457 @@
+{# Market comparison result partial — full analysis with govt schemes, MSP, projections #}
+{% load i18n %}
+{% with best=result.best second=result.second top_avoid=result.top_avoid emotion=result.emotion %}
+
+<div class="market-result-inner">
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 1. SUMMARY STRIP                                                       -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center bg-white rounded-4 shadow-sm p-3 mb-4">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <span class="fw-bold fs-5">{{ result.state }}</span>
+      <span class="text-muted">·</span>
+      <span class="text-muted">{{ result.land_size_acres }} acres</span>
+      <span class="text-muted">·</span>
+      <span class="text-muted">₹{{ result.investment_capacity|floatformat:0 }}</span>
+      <span class="badge bg-secondary">{{ result.mode|title }} {% trans "Mode" %}</span>
+    </div>
+    <div class="d-flex gap-2 mt-2 mt-md-0">
+      <span class="badge bg-success">✅ {{ result.good_count }} {% trans "Good" %}</span>
+      <span class="badge bg-danger">❌ {{ result.avoid_count }} {% trans "Risk" %}</span>
+      <span class="badge bg-secondary">{{ result.total_items }} {% trans "Analysed in" %} {{ result.state }}</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 2. TOP 3 RECOMMENDATION CARDS                                          -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="row g-3 mb-4">
+    {% if best %}
+    <div class="col-md-4">
+      <div class="card border-0 shadow rounded-4 h-100" style="border-top:4px solid #198754!important">
+        <div class="card-body p-3">
+          <span class="badge bg-success mb-2">🏆 {% trans "Best Choice" %}</span>
+          <h5 class="fw-bold mb-0">{{ best.name }}</h5>
+          <small class="text-muted">{{ best.type }} · {{ best.season }}</small>
+          <hr class="my-2">
+          <div class="row g-1 text-center">
+            <div class="col-6"><div class="fw-bold text-success">₹{{ best.financial.net_profit|floatformat:0 }}</div><small class="text-muted">{% trans "Net Profit" %}</small></div>
+            <div class="col-6"><div class="fw-bold text-primary">{{ best.financial.roi|floatformat:1 }}%</div><small class="text-muted">{% trans "ROI" %}</small></div>
+            <div class="col-6"><div class="fw-bold text-info">{{ best.stability_pct }}%</div><small class="text-muted">{% trans "Stability" %}</small></div>
+            <div class="col-6"><div class="fw-bold text-warning">₹{{ best.projections.total_5yr|floatformat:0 }}</div><small class="text-muted">{% trans "5yr" %}</small></div>
+          </div>
+          {% if best.item_data.msp_q > 0 %}
+          <div class="mt-2 text-center"><span class="badge bg-info text-dark">🏛 MSP ₹{{ best.item_data.msp_q }}/q</span></div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if second %}
+    <div class="col-md-4">
+      <div class="card border-0 shadow rounded-4 h-100" style="border-top:4px solid #0d6efd!important">
+        <div class="card-body p-3">
+          <span class="badge bg-primary mb-2">🥈 {% trans "Runner-Up" %}</span>
+          <h5 class="fw-bold mb-0">{{ second.name }}</h5>
+          <small class="text-muted">{{ second.type }} · {{ second.season }}</small>
+          <hr class="my-2">
+          <div class="row g-1 text-center">
+            <div class="col-6"><div class="fw-bold text-success">₹{{ second.financial.net_profit|floatformat:0 }}</div><small class="text-muted">{% trans "Net Profit" %}</small></div>
+            <div class="col-6"><div class="fw-bold text-primary">{{ second.financial.roi|floatformat:1 }}%</div><small class="text-muted">{% trans "ROI" %}</small></div>
+            <div class="col-6"><div class="fw-bold text-info">{{ second.stability_pct }}%</div><small class="text-muted">{% trans "Stability" %}</small></div>
+            <div class="col-6"><div class="fw-bold text-warning">₹{{ second.projections.total_5yr|floatformat:0 }}</div><small class="text-muted">{% trans "5yr" %}</small></div>
+          </div>
+          {% if second.item_data.msp_q > 0 %}
+          <div class="mt-2 text-center"><span class="badge bg-info text-dark">🏛 MSP ₹{{ second.item_data.msp_q }}/q</span></div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if top_avoid %}
+    <div class="col-md-4">
+      <div class="card border-0 shadow rounded-4 h-100" style="border-top:4px solid #dc3545!important">
+        <div class="card-body p-3">
+          <span class="badge bg-danger mb-2">❌ {% trans "Avoid — High Risk" %}</span>
+          <h5 class="fw-bold mb-0">{{ top_avoid.name }}</h5>
+          <small class="text-muted">{{ top_avoid.type }}</small>
+          <hr class="my-2">
+          <ul class="ps-3 mb-0 small">
+            {% for r in top_avoid.avoid_reasons %}<li class="text-danger">{{ r }}</li>{% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 3. EMOTION BANNER                                                      -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4 bg-{{ emotion.color }}-subtle">
+    <div class="card-body p-3 d-flex align-items-center gap-3">
+      <div class="fs-2">
+        {% if emotion.label == "Happy" %}😊{% elif emotion.label == "Satisfied" %}🙂{% elif emotion.label == "Neutral" %}😐{% elif emotion.label == "Concerned" %}😟{% else %}😢{% endif %}
+      </div>
+      <div>
+        <strong class="text-{{ emotion.color }}">{{ emotion.label }}</strong>
+        <p class="mb-0 small">{{ emotion.message }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 4. CHARTS                                                              -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white border-0 fw-semibold py-2 px-3">💰 {% trans "Net Profit Comparison (₹)" %}</div>
+        <div class="card-body p-2"><canvas id="mktProfitChart" height="220"></canvas></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white border-0 fw-semibold py-2 px-3">📅 {% trans "5-Year Cumulative Earnings (₹)" %}</div>
+        <div class="card-body p-2"><canvas id="mktProjChart" height="220"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 5. FULL COMPARISON TABLE (with MSP + Govt columns)                    -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="card border-0 shadow rounded-4 mb-4">
+    <div class="card-header bg-white border-bottom fw-semibold py-2 px-3">
+      📋 {% trans "Full Comparison" %} — {{ result.state }} ({{ result.total_items }} {% trans "items available in this region" %})
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive" style="max-height:460px;overflow-y:auto">
+        <table class="table table-hover table-sm align-middle mb-0">
+          <thead class="table-dark sticky-top">
+            <tr>
+              <th class="ps-3">#</th>
+              <th>{% trans "Crop / Veg" %}</th>
+              <th>{% trans "Type" %}</th>
+              <th>{% trans "Climate Fit" %}</th>
+              <th class="text-end">{% trans "Profit (₹)" %}</th>
+              <th class="text-end">{% trans "ROI%" %}</th>
+              <th class="text-center">{% trans "Stability" %}</th>
+              <th class="text-center">{% trans "Volatility" %}</th>
+              <th class="text-center">{% trans "MSP" %}</th>
+              <th class="text-center">{% trans "Demand" %}</th>
+              <th class="text-end">{% trans "3yr (₹)" %}</th>
+              <th class="text-end">{% trans "5yr (₹)" %}</th>
+              <th class="text-center">{% trans "Temp Dev" %}</th>
+              <th class="text-center">{% trans "Verdict" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in result.results %}
+            <tr class="{% if item.is_avoid %}table-danger{% elif forloop.first %}table-success bg-opacity-25{% elif forloop.counter == 2 %}table-primary bg-opacity-10{% endif %}">
+              <td class="ps-3 text-muted fw-bold small">{{ forloop.counter }}</td>
+              <td>
+                <div class="fw-semibold small">{{ item.name }}</div>
+                <small class="text-muted">{{ item.season }}</small>
+              </td>
+              <td>
+                <span class="badge small {% if item.type == 'Crop' %}bg-warning text-dark{% elif item.type == 'Vegetable' %}bg-success{% else %}bg-info text-dark{% endif %}">{{ item.type }}</span>
+              </td>
+              <td>
+                <span class="badge bg-{{ item.suitability.color }}-subtle text-{{ item.suitability.color }} border border-{{ item.suitability.color }} small">{{ item.suitability.level }}</span>
+                <div class="progress mt-1" style="height:3px;width:70px">
+                  <div class="progress-bar bg-{{ item.suitability.color }}" style="width:{{ item.suitability.pct }}%"></div>
+                </div>
+              </td>
+              <td class="text-end small fw-bold {% if item.financial.net_profit >= 0 %}text-success{% else %}text-danger{% endif %}">₹{{ item.financial.net_profit|floatformat:0 }}</td>
+              <td class="text-end small {% if item.financial.roi >= 0 %}text-success{% else %}text-danger{% endif %}">{{ item.financial.roi|floatformat:1 }}%</td>
+              <td class="text-center small">
+                <div class="progress mx-auto mb-1" style="height:5px;width:55px">
+                  <div class="progress-bar bg-info" style="width:{{ item.stability_pct }}%"></div>
+                </div>
+                {{ item.stability_pct }}%
+              </td>
+              <td class="text-center">
+                {% with vp=item.item_data.price_volatility_pct v=item.item_data.price_volatility %}
+                <span class="badge small {% if v > 0.70 %}bg-danger{% elif v > 0.40 %}bg-warning text-dark{% else %}bg-success{% endif %}">{{ vp|floatformat:0 }}%</span>
+                {% endwith %}
+              </td>
+              <td class="text-center small">
+                {% if item.item_data.msp_q > 0 %}
+                <span class="badge bg-info text-dark small" title="MSP ₹{{ item.item_data.msp_q }}/q">🏛 ₹{{ item.item_data.msp_q }}</span>
+                {% else %}
+                <span class="text-muted small">—</span>
+                {% endif %}
+              </td>
+              <td class="text-center small">
+                {% with d=item.item_data.demand_index dp=item.item_data.demand_pct %}
+                <span class="badge small {% if d > 0.80 %}bg-success{% elif d > 0.60 %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ dp|floatformat:0 }}%</span>
+                {% endwith %}
+              </td>
+              <td class="text-end small">₹{{ item.projections.total_3yr|floatformat:0 }}</td>
+              <td class="text-end small fw-semibold">₹{{ item.projections.total_5yr|floatformat:0 }}</td>
+              <td class="text-center small">
+                <span class="{% if item.suitability.temp_deviation_c > 5 %}text-danger{% elif item.suitability.temp_deviation_c > 2 %}text-warning{% else %}text-success{% endif %}">{{ item.suitability.temp_deviation_c }}°C</span>
+              </td>
+              <td class="text-center">
+                {% if item.is_avoid %}<span class="badge bg-danger small">❌ {% trans "Avoid" %}</span>
+                {% elif forloop.first %}<span class="badge bg-success small">🏆 {% trans "Best" %}</span>
+                {% elif forloop.counter == 2 %}<span class="badge bg-primary small">🥈 {% trans "2nd" %}</span>
+                {% elif not item.is_avoid and item.suitability.level == "Suitable" %}<span class="badge bg-success-subtle text-success border border-success small">✅</span>
+                {% else %}<span class="badge bg-secondary small">✓</span>{% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="14" class="text-center py-5 text-muted">{% trans "No items found for" %} {{ result.state }} {% trans "with selected filters." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 6. TOP-5 YEAR-BY-YEAR PROJECTION TABLE                                -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  {% if result.results %}
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-header bg-white border-bottom fw-semibold py-2 px-3">
+      📅 {% trans "5-Year Earnings Forecast — Top Crops in" %} {{ result.state }}
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">{% trans "Crop / Veg" %}</th>
+              <th class="text-end">2025</th>
+              <th class="text-end">2026</th>
+              <th class="text-end">2027</th>
+              <th class="text-end">2028</th>
+              <th class="text-end">2029</th>
+              <th class="text-end fw-bold">{% trans "5yr Total" %}</th>
+              <th class="text-center">{% trans "Trend" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in result.results|slice:":8" %}
+            {% if not item.is_avoid %}
+            <tr {% if forloop.first %}class="table-success bg-opacity-25"{% endif %}>
+              <td class="ps-3 fw-semibold small">
+                {{ item.name }}
+                {% if item.item_data.msp_q > 0 %}<span class="badge bg-info text-dark ms-1" style="font-size:0.65rem">MSP</span>{% endif %}
+              </td>
+              {% for yr_profit in item.projections.yearly %}
+              <td class="text-end small {% if yr_profit >= 0 %}text-success{% else %}text-danger{% endif %}">
+                ₹{{ yr_profit|floatformat:0 }}
+              </td>
+              {% endfor %}
+              <td class="text-end small fw-bold text-primary">₹{{ item.projections.total_5yr|floatformat:0 }}</td>
+              <td class="text-center">
+                {% if item.item_data.price_volatility > 0.60 %}<span class="text-danger small">{% trans "High Risk" %}</span>
+                {% elif item.item_data.price_growth_rate > 0.05 %}<span class="text-success">↑↑</span>
+                {% elif item.item_data.price_growth_rate > 0.02 %}<span class="text-success">↑</span>
+                {% else %}<span class="text-muted">→</span>{% endif %}
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 7. GOVERNMENT INTELLIGENCE                                             -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4" style="border-left:4px solid #0d6efd!important">
+    <div class="card-header border-bottom fw-semibold py-2 px-3" style="background:linear-gradient(135deg,#e8f0fe,#fff)">
+      🏛 {% trans "Government Role — How Schemes Boost Farmer Revenue in" %} {{ result.state }}
+    </div>
+    <div class="card-body p-0">
+
+      <!-- MSP Coverage stats -->
+      <div class="row g-0 border-bottom text-center">
+        {% with msp_count=result.results|length %}
+        <div class="col-6 col-md-3 py-3 border-end">
+          <div class="fw-bold fs-5 text-primary">{{ result.total_items }}</div>
+          <small class="text-muted d-block">{% trans "Items Analysed" %}</small>
+          <small class="text-muted">{% trans "in" %} {{ result.state }}</small>
+        </div>
+        <div class="col-6 col-md-3 py-3 border-end">
+          <div class="fw-bold fs-5 text-success">{{ result.good_count }}</div>
+          <small class="text-muted d-block">{% trans "Profitable Options" %}</small>
+          <small class="text-muted">{% trans "positive returns" %}</small>
+        </div>
+        <div class="col-6 col-md-3 py-3 border-end">
+          <div class="fw-bold fs-5 text-info">₹6,000</div>
+          <small class="text-muted d-block">{% trans "PM-KISAN Bonus" %}</small>
+          <small class="text-muted">{% trans "guaranteed / year" %}</small>
+        </div>
+        <div class="col-6 col-md-3 py-3">
+          <div class="fw-bold fs-5 text-warning">90%</div>
+          <small class="text-muted d-block">{% trans "Max PMFBY Cover" %}</small>
+          <small class="text-muted">{% trans "crop loss insured" %}</small>
+        </div>
+        {% endwith %}
+      </div>
+
+      <!-- MSP-protected crops list -->
+      {% if result.results %}
+      <div class="p-3 border-bottom">
+        <h6 class="fw-bold mb-3">🏛 MSP-Protected Crops Available in {{ result.state }}</h6>
+        <div class="d-flex flex-wrap gap-2">
+          {% for item in result.results %}
+          {% if item.item_data.msp_q > 0 %}
+          <span class="badge bg-info text-dark px-3 py-2">
+            {{ item.name }} — ₹{{ item.item_data.msp_q }}/q guaranteed
+          </span>
+          {% endif %}
+          {% endfor %}
+          <span class="badge bg-secondary px-3 py-2">Vegetables/Spices have no MSP — market-dependent</span>
+        </div>
+        <div class="mt-2 p-2 rounded-3" style="background:#f0f9ff">
+          <small class="text-info"><strong>What MSP means:</strong> Even if market price falls below MSP, government procures at minimum support price — protecting your floor income.</small>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- National Schemes Table -->
+      <div class="p-3">
+        <h6 class="fw-bold mb-3">📋 Key Government Schemes for {{ result.state }} Farmers</h6>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Scheme</th>
+                <th>Benefit for Farmer</th>
+                <th class="text-end">Annual Value</th>
+                <th class="text-center">Who Gets It</th>
+                <th class="text-center">Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-warning text-dark me-1">💰</span>PM-KISAN</td>
+                <td class="small text-muted">₹6,000 direct cash in 3 installments. No condition on crop type.</td>
+                <td class="text-end small fw-bold text-warning">₹6,000/yr</td>
+                <td class="text-center"><small>All landholding farmers</small></td>
+                <td class="text-center"><span class="badge bg-success small">↑ Income</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-info text-dark me-1">🛡</span>PM Fasal Bima (PMFBY)</td>
+                <td class="small text-muted">Covers natural calamity, pest, disease. Premium 2–5% only. Govt pays rest.</td>
+                <td class="text-end small fw-bold text-info">Up to 90% crop value</td>
+                <td class="text-center"><small>All crop farmers</small></td>
+                <td class="text-center"><span class="badge bg-info text-dark small">↓ Risk</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-primary me-1">☀</span>PM KUSUM</td>
+                <td class="small text-muted">Solar pump subsidy 60–90%. Saves ₹20,000–₹60,000 annually on diesel/electricity.</td>
+                <td class="text-end small fw-bold text-primary">60–90% subsidy</td>
+                <td class="text-center"><small>Irrigation users</small></td>
+                <td class="text-center"><span class="badge bg-primary small">↓ Cost</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-success me-1">💳</span>Kisan Credit Card</td>
+                <td class="small text-muted">Credit at 4–7% p.a. vs 18–24% from moneylenders. Saves ₹5,000–₹15,000/season.</td>
+                <td class="text-end small fw-bold text-success">4–7% rate</td>
+                <td class="text-center"><small>All farmers</small></td>
+                <td class="text-center"><span class="badge bg-success small">↓ Cost</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-danger me-1">🏪</span>e-NAM (Online Mandi)</td>
+                <td class="small text-muted">Sell produce online across India. Eliminates middlemen. 5–15% better price.</td>
+                <td class="text-end small fw-bold text-danger">+5–15% price</td>
+                <td class="text-center"><small>All sellers</small></td>
+                <td class="text-center"><span class="badge bg-danger small">↑ Price</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-secondary me-1">🌱</span>Soil Health Card</td>
+                <td class="small text-muted">Free soil testing + recommendations. Follow it to boost yield 10–15%.</td>
+                <td class="text-end small fw-bold">Free + 10–15% yield</td>
+                <td class="text-center"><small>All farmers</small></td>
+                <td class="text-center"><span class="badge bg-secondary small">↑ Yield</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-warning text-dark me-1">🌾</span>PKVY Organic Farming</td>
+                <td class="small text-muted">₹50,000/hectare for organic transition. Organic premium 20–30% higher price.</td>
+                <td class="text-end small fw-bold text-warning">₹50,000/ha</td>
+                <td class="text-center"><small>Organic farmers</small></td>
+                <td class="text-center"><span class="badge bg-warning text-dark small">↑ Price</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold small"><span class="badge bg-info text-dark me-1">🏗</span>Agri Infrastructure Fund</td>
+                <td class="small text-muted">Loan at 3% for cold storage, warehouses. Reduce 30–40% post-harvest losses.</td>
+                <td class="text-end small fw-bold text-info">3% loan rate</td>
+                <td class="text-center"><small>Farmers/FPOs</small></td>
+                <td class="text-center"><span class="badge bg-info text-dark small">↓ Loss</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Revenue enhancement summary -->
+        <div class="mt-3 p-3 rounded-3 row g-3" style="background:linear-gradient(135deg,#f0fdf4,#e8f0fe)">
+          <div class="col-12 mb-2"><strong class="text-success">💡 Combined Government Revenue Enhancement for {{ result.state }}</strong></div>
+          <div class="col-6 col-md-3 text-center">
+            <div class="fw-bold text-warning">₹6,000</div><small class="text-muted">PM-KISAN / year</small>
+          </div>
+          <div class="col-6 col-md-3 text-center">
+            <div class="fw-bold text-primary">₹20,000+</div><small class="text-muted">Solar pump savings</small>
+          </div>
+          <div class="col-6 col-md-3 text-center">
+            <div class="fw-bold text-success">+15%</div><small class="text-muted">e-NAM price boost</small>
+          </div>
+          <div class="col-6 col-md-3 text-center">
+            <div class="fw-bold text-info">90%</div><small class="text-muted">Crop loss covered</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- 8. MARKET INTELLIGENCE CARDS (Top 5)                                   -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <h6 class="fw-bold mb-3">📊 Market Intelligence — Price, Demand & Stability</h6>
+  <div class="row g-3 mb-4">
+    {% for item in result.results|slice:":6" %}{% if not item.is_avoid %}
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <span class="fw-bold small">{{ item.name }}</span>
+              <span class="badge ms-1 {% if item.type == 'Crop' %}bg-warning text-dark{% else %}bg-success{% endif %}" style="font-size:.65rem">{{ item.type }}</span>
+            </div>
+            {% if forloop.first %}<span class="badge bg-success">🏆</span>{% elif forloop.counter == 2 %}<span class="badge bg-primary">🥈</span>{% endif %}
+          </div>
+          <hr class="my-2">
+          <div class="row g-1" style="font-size:.78rem">
+            <div class="col-7 text-muted">Demand Score</div>
+            <div class="col-5 text-end fw-semibold">{{ item.item_data.demand_pct|floatformat:0 }}%</div>
+            <div class="col-7 text-muted">Price Volatility</div>
+            <div class="col-5 text-end fw-semibold {% if item.item_data.price_volatility > 0.7 %}text-danger{% elif item.item_data.price_volatility > 0.4 %}text-warning{% else %}text-success{% endif %}">{{ item.item_data.price_volatility_pct|floatformat:0 }}%</div>
+            <div class="col-7 text-muted">Storage Risk</div>
+            <div class="col-5 text-end fw-semibold {% if item.item_data.storage_loss_pct > 30 %}text-danger{% else %}text-muted{% endif %}">{{ item.item_data.storage_loss_pct }}% loss</div>
+            <div class="col-7 text-muted">Annual Growth</div>
+            <div class="col-5 text-end fw-semibold text-success">+{{ item.item_data.price_growth_pct|floatformat:0 }}%/yr</div>
+            <div class="col-7 text-muted">MSP Protected</div>
+            <div class="col-5 text-end fw-semibold">{% if item.item_data.msp_q > 0 %}<span class="text-info">Yes ₹{{ item.item_data.msp_q }}</span>{% else %}<span class="text-muted">No</span>{% endif %}</div>
+            <div class="col-7 text-muted">Stability Score</div>
+            <div class="col-5 text-end fw-semibold">{{ item.stability_pct }}%</div>
+            <div class="col-7 text-muted">5yr Earnings</div>
+            <div class="col-5 text-end fw-bold text-primary">₹{{ item.projections.total_5yr|floatformat:0 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+
+</div>
+{% endwith %}

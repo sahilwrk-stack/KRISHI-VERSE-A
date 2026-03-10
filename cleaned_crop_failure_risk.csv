@@ -1,0 +1,5 @@
+crop,risk_factor,impact_type,expected_yield_loss_percent,description
+rice,low rainfall,water deficiency,40,rice requires standing water
+wheat,high temperature,heat stress,30,heat reduces grain filling
+maize,excess rainfall,waterlogging,25,roots suffocate due to excess water
+bajra,poor soil,low nutrients,20,soil lacks essential nutrients

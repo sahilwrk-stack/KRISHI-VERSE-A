@@ -1,0 +1,7 @@
+state,vegetable_name,avg_price_per_quintal,min_price,max_price,seasonal_price_index,demand_index,price_volatility_score
+punjab,tomato,1200,800,2000,1.2,0.85,0.6
+punjab,potato,900,600,1300,1.0,0.75,0.4
+maharashtra,tomato,1400,900,2200,1.3,0.9,0.7
+maharashtra,onion,1100,700,1700,1.1,0.8,0.5
+karnataka,potato,950,650,1400,1.05,0.7,0.45
+karnataka,cabbage,800,500,1200,0.95,0.65,0.35

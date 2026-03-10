@@ -1,0 +1,770 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "KRISHI-VERSE AI" %} — {% trans "Smart Farming Intelligence Platform" %}{% endblock %}
+
+{% block nav_home %}active{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   COVER PAGE HERO
+═══════════════════════════════════════════════════════════════ */
+.hero-landing {
+  min-height: 100vh;
+  background:
+    linear-gradient(160deg, #020d05 0%, #041a0a 25%, #062e12 50%, #0a4a20 75%, #0d6b33 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Futuristic grid lines overlay ── */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(76,175,80,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(76,175,80,0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* ── Glowing orbs ── */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+  opacity: 0.18;
+  animation: orbFloat 12s ease-in-out infinite alternate;
+}
+.orb-1 { width: 560px; height: 560px; background: #1a6b3c; top: -140px; left: -100px; animation-duration: 14s; }
+.orb-2 { width: 420px; height: 420px; background: #0e7373; bottom: -120px; right: -60px; animation-duration: 18s; animation-delay: 3s; }
+.orb-3 { width: 300px; height: 300px; background: #43a047; top: 40%; left: 55%; animation-duration: 10s; animation-delay: 6s; opacity: 0.10; }
+@keyframes orbFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, 40px) scale(1.08); }
+}
+
+/* ── Data node decorations ── */
+.data-nodes {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.dnode {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(76,175,80,0.5);
+  box-shadow: 0 0 12px rgba(76,175,80,0.6);
+  animation: nodePulse 4s ease-in-out infinite;
+}
+.dnode::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, rgba(76,175,80,0.4), transparent);
+  transform-origin: left center;
+}
+.dn1 { top: 18%; left: 8%;  animation-delay: 0s; }
+.dn2 { top: 72%; left: 12%; animation-delay: 1s; }
+.dn3 { top: 30%; right: 10%; animation-delay: 2s; }
+.dn4 { top: 60%; right: 8%;  animation-delay: 0.5s; }
+.dn5 { top: 45%; left: 4%;  animation-delay: 1.5s; }
+.dn6 { top: 85%; right: 20%; animation-delay: 2.5s; }
+.dn7 { top: 12%; right: 30%; animation-delay: 3s; }
+.dn8 { top: 50%; left: 92%; animation-delay: 0.8s; }
+@keyframes nodePulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.6); }
+}
+
+/* ── Floating crop icons ── */
+.crop-floaters {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: hidden;
+}
+.floater {
+  position: absolute;
+  font-size: clamp(1rem, 1.8vw, 1.6rem);
+  opacity: 0;
+  animation: floatUp linear infinite;
+  user-select: none;
+  filter: drop-shadow(0 0 8px rgba(76,175,80,0.3));
+}
+@keyframes floatUp {
+  0%   { transform: translateY(110vh) rotate(0deg);  opacity: 0; }
+  5%   { opacity: 0.22; }
+  90%  { opacity: 0.15; }
+  100% { transform: translateY(-10vh) rotate(20deg); opacity: 0; }
+}
+.f1  { left:  4%; animation-duration: 16s; animation-delay:  0s; }
+.f2  { left: 14%; animation-duration: 22s; animation-delay:  4s; }
+.f3  { left: 24%; animation-duration: 14s; animation-delay:  8s; }
+.f4  { left: 36%; animation-duration: 19s; animation-delay:  2s; }
+.f5  { left: 55%; animation-duration: 24s; animation-delay:  6s; }
+.f6  { left: 65%; animation-duration: 15s; animation-delay:  9s; }
+.f7  { left: 76%; animation-duration: 20s; animation-delay:  3s; }
+.f8  { left: 86%; animation-duration: 18s; animation-delay:  7s; }
+.f9  { left: 93%; animation-duration: 23s; animation-delay: 11s; }
+.f10 { left: 47%; animation-duration: 13s; animation-delay: 13s; }
+
+/* ── Cover layout ── */
+.hero-content { position: relative; z-index: 4; text-align: center; }
+
+/* ── Logo glass card ── */
+.cover-logo-wrap {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 130px; height: 130px;
+  border-radius: 36px;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255,255,255,0.14);
+  box-shadow:
+    0 0 0 1px rgba(76,175,80,0.15),
+    0 0 60px rgba(76,175,80,0.18),
+    0 20px 60px rgba(0,0,0,0.4);
+  margin-bottom: 32px;
+  animation: logoGlow 4s ease-in-out infinite alternate;
+}
+@keyframes logoGlow {
+  0%   { box-shadow: 0 0 0 1px rgba(76,175,80,0.15), 0 0 50px rgba(76,175,80,0.14), 0 20px 60px rgba(0,0,0,0.4); }
+  100% { box-shadow: 0 0 0 1px rgba(76,175,80,0.30), 0 0 90px rgba(76,175,80,0.28), 0 20px 60px rgba(0,0,0,0.4); }
+}
+
+/* ── AI / Report badge ── */
+.cover-ai-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(76,175,80,0.14);
+  border: 1px solid rgba(76,175,80,0.35);
+  padding: 7px 20px; border-radius: 50px;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: #81c784;
+  margin-bottom: 20px;
+}
+.cover-ai-badge .ai-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #4caf50;
+  box-shadow: 0 0 8px rgba(76,175,80,0.9);
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ── Main titles ── */
+.cover-brand-name {
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 0 80px rgba(76,175,80,0.3);
+  margin-bottom: 10px;
+}
+.cover-brand-name .ag-green { color: #4caf50; }
+
+.cover-platform-name {
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 24px;
+}
+
+/* ── Official report label ── */
+.cover-report-label {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 10px 28px; border-radius: 50px;
+  font-size: 0.82rem; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  margin-bottom: 32px;
+}
+
+/* ── Divider line ── */
+.cover-divider {
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, #43a047, #00897b, transparent);
+  margin: 0 auto 28px;
+  border-radius: 2px;
+}
+
+/* ── Description card ── */
+.cover-desc-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 20px;
+  padding: 22px 36px;
+  max-width: 640px;
+  margin: 0 auto 40px;
+  color: rgba(255,255,255,0.70);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  line-height: 1.85;
+}
+
+/* ── CTA button ── */
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, #1a6b3c 0%, #43a047 50%, #00897b 100%);
+  background-size: 200% 200%;
+  color: #fff !important; font-weight: 800; font-size: 1.1rem;
+  padding: 18px 46px; border-radius: 60px; text-decoration: none;
+  box-shadow: 0 8px 40px rgba(76,175,80,0.45), 0 2px 0 rgba(255,255,255,0.12) inset;
+  transition: all 0.35s ease;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  letter-spacing: 0.4px;
+  animation: btnGlow 3s ease-in-out infinite;
+}
+.cta-btn:hover {
+  background-position: 100% 100%;
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 56px rgba(76,175,80,0.6), 0 2px 0 rgba(255,255,255,0.18) inset;
+  color: #fff !important;
+}
+@keyframes btnGlow {
+  0%, 100% { box-shadow: 0 8px 40px rgba(76,175,80,0.40); }
+  50%       { box-shadow: 0 8px 60px rgba(76,175,80,0.65), 0 0 0 6px rgba(76,175,80,0.08); }
+}
+
+.cta-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.50); font-size: 0.88rem;
+  text-decoration: none; transition: color 0.25s;
+}
+.cta-secondary:hover { color: #fff; }
+
+/* ── Micro tags row ── */
+.cover-tags {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: center; gap: 10px;
+  margin-top: 28px;
+}
+.cover-tag {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(76,175,80,0.2);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.73rem; font-weight: 700;
+  padding: 5px 14px; border-radius: 50px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Scroll indicator ── */
+.scroll-indicator {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 5; display: flex; flex-direction: column; align-items: center; gap: 5px;
+  color: rgba(255,255,255,0.25); font-size: 0.68rem; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  animation: scrollBounce 2.2s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(9px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FEATURE CARDS
+═══════════════════════════════════════════════════════════════ */
+/* (stats section removed per design) */
+.features-section {
+  padding: 100px 0;
+  background: #f0f7f0;
+}
+.section-eyebrow {
+  font-size: 0.78rem; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: #1a6b3c;
+}
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900; color: #0d1b0f; letter-spacing: -0.5px; line-height: 1.2;
+}
+.section-sub {
+  color: #5a7a5a; font-size: 1.05rem; max-width: 560px; line-height: 1.7;
+}
+
+.feat-card {
+  background: #fff;
+  border: 1px solid #e8f5e9;
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  height: 100%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative; overflow: hidden;
+}
+.feat-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1a6b3c, #4caf50, #00897b);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.feat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(26,107,60,0.15);
+  border-color: #c8e6c9;
+}
+.feat-card:hover::before { transform: scaleX(1); }
+
+.feat-icon-wrap {
+  width: 60px; height: 60px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; margin-bottom: 1.2rem;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+}
+.feat-card h5 { font-weight: 800; font-size: 1.05rem; color: #0d1b0f; margin-bottom: 8px; }
+.feat-card p  { color: #6c857c; font-size: 0.88rem; line-height: 1.65; margin: 0; }
+
+/* ═══════════════════════════════════════════════════════════════
+   HOW IT WORKS
+═══════════════════════════════════════════════════════════════ */
+.hiw-section {
+  padding: 100px 0;
+  background: linear-gradient(180deg, #0d1b0f 0%, #133220 100%);
+  overflow: hidden;
+  position: relative;
+}
+.hiw-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(76,175,80,0.06) 0%, transparent 70%);
+}
+.hiw-step {
+  text-align: center; padding: 2rem 1.5rem;
+  position: relative; z-index: 1;
+}
+.hiw-num {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a6b3c, #43a047);
+  color: #fff; font-size: 1.7rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 28px rgba(76,175,80,0.4);
+  position: relative;
+}
+.hiw-num::after {
+  content: '';
+  position: absolute; top: 50%; left: 100%;
+  width: calc(100% + 2rem); height: 2px;
+  background: linear-gradient(90deg, rgba(76,175,80,0.4), rgba(76,175,80,0.1));
+  transform: translateY(-50%);
+}
+.hiw-step:last-child .hiw-num::after { display: none; }
+
+.hiw-icon-wrap {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(76,175,80,0.12);
+  border: 2px solid rgba(76,175,80,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; margin: 0 auto 1.2rem;
+  transition: all 0.3s ease;
+}
+.hiw-step:hover .hiw-icon-wrap {
+  background: rgba(76,175,80,0.25);
+  transform: scale(1.1);
+}
+.hiw-step h5  { color: #fff; font-weight: 800; font-size: 1.1rem; margin-bottom: 8px; }
+.hiw-step p   { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.65; }
+.hiw-connector {
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(76,175,80,0.4); font-size: 1.5rem; padding-top: 2rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CROP SHOWCASE
+═══════════════════════════════════════════════════════════════ */
+.crops-section {
+  padding: 80px 0;
+  background: #f0f7f0;
+  overflow: hidden;
+}
+.crop-track-wrap {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+.crop-track {
+  display: flex; gap: 20px;
+  animation: scrollTrack 30s linear infinite;
+  width: max-content;
+}
+.crop-track:hover { animation-play-state: paused; }
+@keyframes scrollTrack {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.crop-card-sm {
+  background: #fff;
+  border: 1px solid #e8f5e9;
+  border-radius: 16px;
+  padding: 20px 24px;
+  text-align: center;
+  min-width: 140px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: transform 0.2s;
+}
+.crop-card-sm:hover { transform: translateY(-4px); }
+.crop-card-sm .crop-emoji { font-size: 2.6rem; display: block; margin-bottom: 8px; }
+.crop-card-sm .crop-name { font-size: 0.82rem; font-weight: 700; color: #1a3a20; }
+.crop-card-sm .crop-type { font-size: 0.72rem; color: #7a9a7a; }
+
+/* ═══════════════════════════════════════════════════════════════
+   CTA BOTTOM SECTION
+═══════════════════════════════════════════════════════════════ */
+.cta-section {
+  padding: 100px 0;
+  background: linear-gradient(135deg, #0d1b0f, #0f4a2a);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(76,175,80,0.08) 0%, transparent 70%);
+}
+.cta-section .cta-btn-lg {
+  display: inline-flex; align-items: center; gap: 14px;
+  background: linear-gradient(135deg, #43a047, #66bb6a);
+  color: #fff !important; font-weight: 900; font-size: 1.25rem;
+  padding: 22px 56px; border-radius: 70px;
+  text-decoration: none;
+  box-shadow: 0 12px 40px rgba(76,175,80,0.5);
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+  position: relative; z-index: 1;
+}
+.cta-section .cta-btn-lg:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(76,175,80,0.6);
+  color: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATION HELPERS
+═══════════════════════════════════════════════════════════════ */
+.fade-in-up { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in-up.visible { opacity: 1; transform: translateY(0); }
+.fade-in-left  { opacity: 0; transform: translateX(-32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in-left.visible  { opacity: 1; transform: translateX(0); }
+.fade-in-right { opacity: 0; transform: translateX(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in-right.visible { opacity: 1; transform: translateX(0); }
+
+/* Stagger delays */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+.delay-7 { transition-delay: 0.7s; }
+.delay-8 { transition-delay: 0.8s; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════
+     PREMIUM COVER PAGE HERO
+═══════════════════════════════════════════════════════════════ -->
+<section class="hero-landing">
+
+  <!-- Futuristic grid overlay -->
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <!-- Glowing orbs -->
+  <div class="hero-orb orb-1" aria-hidden="true"></div>
+  <div class="hero-orb orb-2" aria-hidden="true"></div>
+  <div class="hero-orb orb-3" aria-hidden="true"></div>
+
+  <!-- Data network nodes -->
+  <div class="data-nodes" aria-hidden="true">
+    <div class="dnode dn1"></div>
+    <div class="dnode dn2"></div>
+    <div class="dnode dn3"></div>
+    <div class="dnode dn4"></div>
+    <div class="dnode dn5"></div>
+    <div class="dnode dn6"></div>
+    <div class="dnode dn7"></div>
+    <div class="dnode dn8"></div>
+  </div>
+
+  <!-- Floating crop icons (very subtle) -->
+  <div class="crop-floaters" aria-hidden="true">
+    <span class="floater f1">🌾</span>
+    <span class="floater f2">🥕</span>
+    <span class="floater f3">🌽</span>
+    <span class="floater f4">🍅</span>
+    <span class="floater f5">🌿</span>
+    <span class="floater f6">🌾</span>
+    <span class="floater f7">🥦</span>
+    <span class="floater f8">🌽</span>
+    <span class="floater f9">🍀</span>
+    <span class="floater f10">🌱</span>
+  </div>
+
+  <!-- ── Cover content ── -->
+  <div class="container hero-content py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-xl-8">
+
+        <!-- AI badge -->
+        <div class="cover-ai-badge fade-in-up">
+          <span class="ai-dot"></span>
+          {% trans "AI-Powered Agriculture Intelligence Platform" %}
+        </div>
+
+        <!-- Logo in glass card -->
+        <div class="cover-logo-wrap fade-in-up delay-1 mx-auto d-flex">
+          <svg width="78" height="78" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="KRISHI-VERSE AI">
+            <defs>
+              <linearGradient id="covGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0d3b23"/>
+                <stop offset="100%" stop-color="#43a047"/>
+              </linearGradient>
+              <filter id="logoGlow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect x="8" y="8" width="104" height="104" rx="28" fill="url(#covGrad)" filter="url(#logoGlow)"/>
+            <path d="M60 27c-16 11-25 26-25 42 0 13 9 24 25 24s25-11 25-24c0-16-9-31-25-42Z" fill="#ffffff" opacity="0.18"/>
+            <path d="M61 29c-12 9-19 21-19 33 0 10 7 18 19 18s19-8 19-18c0-12-7-24-19-33Z" fill="#ffffff"/>
+            <path d="M60 34v46" stroke="#0d3b23" stroke-width="5" stroke-linecap="round"/>
+            <path d="M60 49c-9-2-14-8-16-15 8 1 15 5 16 15Z" fill="#66bb6a"/>
+            <path d="M60 58c10-2 15-8 17-15-8 1-15 5-17 15Z" fill="#81c784"/>
+          </svg>
+        </div>
+
+        <!-- Main title -->
+        <h1 class="cover-brand-name fade-in-up delay-2">
+          <span class="ag-green">KRISHI</span>-VERSE&nbsp;<span class="ag-green">AI</span>
+        </h1>
+        <div class="cover-platform-name fade-in-up delay-3">
+          {% trans "Smart Farming Intelligence Platform" %}
+        </div>
+
+        <!-- Official report badge -->
+        <div class="fade-in-up delay-3">
+          <div class="cover-report-label d-inline-flex">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            {% trans "Official Agricultural Analysis Report" %}
+          </div>
+        </div>
+
+        <!-- Decorative divider -->
+        <div class="cover-divider fade-in-up delay-4"></div>
+
+        <!-- Description glassmorphism card -->
+        <div class="cover-desc-card fade-in-up delay-4">
+          {% trans "AI-powered crop intelligence, soil analysis, yield forecasting and financial insights for data-driven farming decisions — covering every major crop, every Indian state." %}
+        </div>
+
+        <!-- CTA actions -->
+        <div class="d-flex flex-wrap align-items-center justify-content-center gap-4 fade-in-up delay-5">
+          <a href="{% url 'core:analysis' %}" class="cta-btn">
+            <span>🧠</span>
+            <span>{% trans "Start Analysis" %}</span>
+            <i class="bi bi-arrow-right-circle-fill"></i>
+          </a>
+          <a href="#features" class="cta-secondary">
+            <i class="bi bi-play-circle-fill" style="font-size:1.15rem"></i>
+            {% trans "See capabilities" %}
+          </a>
+        </div>
+
+        <!-- Micro tags -->
+        <div class="cover-tags fade-in-up delay-6">
+          <span class="cover-tag">✦ {% trans "Crop Suitability" %}</span>
+          <span class="cover-tag">✦ {% trans "Financial Forecasting" %}</span>
+          <span class="cover-tag">✦ {% trans "Market Intelligence" %}</span>
+          <span class="cover-tag">✦ {% trans "Risk Analysis" %}</span>
+          <span class="cover-tag">✦ {% trans "Govt. Scheme Advisor" %}</span>
+          <span class="cover-tag">✦ {% trans "5-Year Projection" %}</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator">
+    <span>Explore</span>
+    <i class="bi bi-chevron-double-down"></i>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FEATURE CARDS
+═══════════════════════════════════════════════════════════════ -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-eyebrow fade-in-up">{% trans "Intelligence Platform" %}</div>
+      <h2 class="section-title fade-in-up delay-1">{% trans "8 AI Engines Working Together" %}</h2>
+      <p class="section-sub mx-auto fade-in-up delay-2">
+        {% trans "Every analysis runs across multiple engines simultaneously — giving you a complete picture of your farming opportunity in seconds." %}
+      </p>
+    </div>
+
+    <div class="row g-4">
+      {% for card in feature_cards %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="feat-card fade-in-up delay-{{ forloop.counter }}">
+          <div class="feat-icon-wrap">{{ card.emoji }}</div>
+          <h5>{{ card.name }}</h5>
+          <p>{{ card.desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CROP SHOWCASE SCROLL
+═══════════════════════════════════════════════════════════════ -->
+<section class="crops-section">
+  <div class="container mb-4 text-center">
+    <div class="section-eyebrow fade-in-up">{% trans "Supported Crops" %}</div>
+    <h2 class="section-title fade-in-up delay-1">{% trans "Every Major Crop. Every State." %}</h2>
+    <p class="section-sub mx-auto fade-in-up delay-2" style="font-size:.95rem">
+      {% trans "From wheat in Punjab to turmeric in Kerala — our platform knows what grows best where." %}
+    </p>
+  </div>
+  <div class="crop-track-wrap">
+    <div class="crop-track" id="cropTrack">
+      {% for crop in crops_showcase %}
+      <div class="crop-card-sm">
+        <span class="crop-emoji">{{ crop.emoji }}</span>
+        <div class="crop-name">{{ crop.name }}</div>
+        <div class="crop-type">{{ crop.type }}</div>
+      </div>
+      {% endfor %}
+      <!-- Duplicate for seamless loop -->
+      {% for crop in crops_showcase %}
+      <div class="crop-card-sm">
+        <span class="crop-emoji">{{ crop.emoji }}</span>
+        <div class="crop-name">{{ crop.name }}</div>
+        <div class="crop-type">{{ crop.type }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════════════════════════════ -->
+<section class="hiw-section">
+  <div class="container position-relative z-1">
+    <div class="text-center mb-5">
+      <div class="section-eyebrow fade-in-up" style="color:#81c784">{% trans "Simple Process" %}</div>
+      <h2 class="section-title fade-in-up delay-1" style="color:#fff">{% trans "How It Works" %}</h2>
+      <p class="fade-in-up delay-2" style="color:rgba(255,255,255,0.55);font-size:1rem;max-width:440px;margin:0 auto">
+        {% trans "Three steps from farm details to full intelligence report." %}
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="hiw-step fade-in-up delay-1">
+          <div class="hiw-icon-wrap">🌾</div>
+          <div class="hiw-num">1</div>
+          <h5>{% trans "Enter Farm or State Details" %}</h5>
+          <p>{% trans "Select your state, crop, land size, soil type, irrigation availability and investment capacity." %}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="hiw-step fade-in-up delay-3">
+          <div class="hiw-icon-wrap">🤖</div>
+          <div class="hiw-num">2</div>
+          <h5>{% trans "AI Analyses Climate + Market + Risk" %}</h5>
+          <p>{% trans "10 AI engines process climate match, soil fit, financial ROI, price volatility, and government schemes simultaneously." %}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="hiw-step fade-in-up delay-5">
+          <div class="hiw-icon-wrap">📈</div>
+          <div class="hiw-num">3</div>
+          <h5>{% trans "Get Best Crop & Profit Projection" %}</h5>
+          <p>{% trans "Receive a ranked comparison with 5-year income forecast, government subsidy breakdown, and emotional confidence score." %}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5 fade-in-up delay-6">
+      <a href="{% url 'core:analysis' %}" class="cta-btn" style="margin:0 auto">
+        <span>🚀</span> {% trans "Start Analysis Now" %} <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BOTTOM CTA
+═══════════════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container position-relative" style="z-index:1">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 text-center">
+        <div class="section-eyebrow fade-in-up" style="color:#81c784;margin-bottom:16px">{% trans "Ready to Start?" %}</div>
+        <h2 class="fade-in-up delay-1" style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.15;margin-bottom:20px">
+          {% trans "Your Most Profitable" %}<br><span style="color:#81c784">{% trans "Crop Decision Starts Here" %}</span>
+        </h2>
+        <p class="fade-in-up delay-2" style="color:rgba(255,255,255,0.6);font-size:1.05rem;margin-bottom:36px;line-height:1.7">
+          {% trans "No signup. No cost. Just enter your farm details and get a complete AI-powered farming intelligence report instantly." %}
+        </p>
+        <a href="{% url 'core:analysis' %}" class="cta-btn-lg fade-in-up delay-3">
+          <span>🧠</span> {% trans "Analyse Intelligence" %} <i class="bi bi-arrow-right-circle-fill"></i>
+        </a>
+        <p class="mt-4 fade-in-up delay-4" style="color:rgba(255,255,255,0.3);font-size:0.8rem">
+          {% trans "Covers 15+ crops · 36 states · 5-year forecast · Government scheme guide" %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════════════ -->
+<script>
+// ── Scroll-triggered fade-in ─────────────────────────────────
+const fadeEls = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+fadeEls.forEach(el => observer.observe(el));
+
+// Trigger hero elements immediately
+document.querySelectorAll('.hero-content .fade-in-up, .hero-content .fade-in-right').forEach(el => {
+  el.classList.add('visible');
+});
+
+// ── Smooth scroll for anchor link ───────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,6 @@
+state,avg_rainfall_mm,avg_temperature_c,avg_humidity_percent,soil_type
+punjab,650,23,55,loamy
+rajasthan,300,28,40,sandy
+karnataka,800,26,65,red loam
+kerala,2500,27,85,clay loam
+uttar pradesh,900,24,60,alluvial

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Analyse Crop & Vegetables" %} — KRISHI-VERSE AI{% endblock %}
+
+{% block content %}
+<!-- ─── Hero ──────────────────────────────────────────────────────────────── -->
+<div class="hero-section text-white py-5 mb-4" style="background: linear-gradient(135deg,#1a6b2e 0%,#145a32 40%,#0d3b23 100%);">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <span class="badge bg-warning text-dark mb-2 px-3 py-2 fs-6">🥕 New Feature</span>
+        <h1 class="display-5 fw-bold mb-2">Analyse Your Crop &amp; Vegetables</h1>
+        <p class="lead mb-0 opacity-75">
+          Compare every crop &amp; vegetable available in your state — ranked by profit,
+          stability, or risk. Get 5-year projections and market intelligence in seconds.
+        </p>
+      </div>
+      <div class="col-lg-5 mt-4 mt-lg-0">
+        <div class="row g-3 text-center">
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-2">📊</div><small>Market Intelligence</small></div></div>
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-2">🏆</div><small>Best Crop Finder</small></div></div>
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-2">📅</div><small>5-Year Projection</small></div></div>
+          <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 p-3"><div class="fs-2">⚖</div><small>Risk Detection</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Form ──────────────────────────────────────────────────────────────── -->
+<div class="container pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-success text-white py-3 px-4 rounded-top-4">
+          <h5 class="mb-0 fw-semibold">🌾 Enter Your Farm Details</h5>
+          <small class="opacity-75">All crops &amp; vegetables available in your state will be analysed automatically.</small>
+        </div>
+
+        <div class="card-body p-4">
+          <form method="POST" action="{% url 'core:compare' %}" id="compareForm" novalidate>
+            {% csrf_token %}
+
+            <!-- Row 1: State + Soil -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">🗺 State / UT</label>
+                {{ form.state }}
+                {% if form.state.errors %}<div class="text-danger small mt-1">{{ form.state.errors.0 }}</div>{% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">🌱 Soil Type</label>
+                {{ form.soil_type }}
+                {% if form.soil_type.errors %}<div class="text-danger small mt-1">{{ form.soil_type.errors.0 }}</div>{% endif %}
+              </div>
+            </div>
+
+            <!-- Row 2: Land + Investment -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">📐 Land Size (Acres)</label>
+                {{ form.land_size_acres }}
+                {% if form.land_size_acres.errors %}<div class="text-danger small mt-1">{{ form.land_size_acres.errors.0 }}</div>{% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">💰 Investment Capacity (₹)</label>
+                {{ form.investment_capacity }}
+                {% if form.investment_capacity.errors %}<div class="text-danger small mt-1">{{ form.investment_capacity.errors.0 }}</div>{% endif %}
+              </div>
+            </div>
+
+            <!-- Ranking Mode -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">⚙ Ranking Mode</label>
+              <div class="row g-2">
+                {% for val, label in form.mode.field.choices %}
+                <div class="col-6 col-md-3">
+                  <label class="mode-card w-100 text-center p-3 border rounded-3 cursor-pointer
+                    {% if forloop.counter == 3 %}border-success bg-success bg-opacity-10{% endif %}"
+                    style="cursor:pointer" for="id_mode_{{ forloop.counter0 }}">
+                    <input type="radio" name="mode" id="id_mode_{{ forloop.counter0 }}"
+                           value="{{ val }}" class="form-check-input me-1 d-none mode-radio"
+                           {% if forloop.counter == 3 %}checked{% endif %}>
+                    <div class="fw-bold">
+                      {% if val == "profit" %}💰{% elif val == "stable" %}🛡{% elif val == "balanced" %}⚖{% else %}🔒{% endif %}
+                      {{ label }}
+                    </div>
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Filter Type -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">🔍 Show Items</label>
+              <div class="d-flex flex-wrap gap-2">
+                {% for val, label in form.filter_type.field.choices %}
+                <label class="filter-pill px-3 py-2 rounded-pill border
+                  {% if forloop.first %}border-success bg-success text-white{% else %}bg-light{% endif %}"
+                  style="cursor:pointer" for="id_filter_type_{{ forloop.counter0 }}">
+                  <input type="radio" name="filter_type" id="id_filter_type_{{ forloop.counter0 }}"
+                         value="{{ val }}" class="form-check-input d-none filter-radio"
+                         {% if forloop.first %}checked{% endif %}>
+                  {{ label }}
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-100 fw-bold py-3 rounded-3" id="submitBtn">
+              <span class="btn-text">🔍 Analyse Crops &amp; Vegetables</span>
+              <span class="spinner-border spinner-border-sm ms-2 d-none" id="loadSpinner" role="status"></span>
+            </button>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Info cards -->
+      <div class="row g-3 mt-4">
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm rounded-3 h-100 text-center p-3">
+            <div class="fs-2 mb-2">🏆</div>
+            <h6 class="fw-bold">Best Crop Recommended</h6>
+            <p class="text-muted small mb-0">Automatically finds highest profit or most stable crop for your state &amp; investment.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm rounded-3 h-100 text-center p-3">
+            <div class="fs-2 mb-2">⚠</div>
+            <h6 class="fw-bold">Loss-Risk Warnings</h6>
+            <p class="text-muted small mb-0">Flags high-volatility or climate-incompatible crops to help you avoid financial loss.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm rounded-3 h-100 text-center p-3">
+            <div class="fs-2 mb-2">📅</div>
+            <h6 class="fw-bold">5-Year Earning Forecast</h6>
+            <p class="text-muted small mb-0">Projects cumulative 3-year and 5-year income for every crop using growth &amp; stability factors.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.mode-card { border: 2px solid #dee2e6; transition: all 0.2s; }
+.mode-card:hover { border-color: #198754; background: rgba(25,135,84,.06); }
+.mode-card.selected { border-color: #198754 !important; background: rgba(25,135,84,.12) !important; }
+.filter-pill { border: 1.5px solid #dee2e6; transition: all 0.2s; }
+.filter-pill:hover { border-color: #198754; }
+.filter-pill.selected { border-color: #198754 !important; background: #198754 !important; color: #fff !important; }
+</style>
+
+<script>
+document.querySelectorAll('.mode-radio').forEach(r => {
+  r.addEventListener('change', () => {
+    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected','border-success','bg-success','bg-opacity-10'));
+    r.closest('.mode-card').classList.add('selected','border-success','bg-success','bg-opacity-10');
+  });
+});
+document.querySelectorAll('.filter-radio').forEach(r => {
+  r.addEventListener('change', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => {
+      p.classList.remove('selected','bg-success','text-white'); p.classList.add('bg-light');
+    });
+    r.closest('.filter-pill').classList.add('selected','bg-success','text-white');
+    r.closest('.filter-pill').classList.remove('bg-light');
+  });
+});
+document.getElementById('compareForm').addEventListener('submit', function() {
+  document.getElementById('loadSpinner').classList.remove('d-none');
+  document.getElementById('submitBtn').disabled = true;
+  document.querySelector('.btn-text').textContent = 'Analysing…';
+});
+</script>
+{% endblock %}

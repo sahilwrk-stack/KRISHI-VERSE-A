@@ -1,0 +1,284 @@
+{% load i18n %}
+<!DOCTYPE html>
+{% get_current_language as CURRENT_LANG %}
+<html lang="{{ CURRENT_LANG }}">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}{% trans "KRISHI-VERSE AI" %}{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --ag-green:   #1a6b3c;
+      --ag-green2:  #28a745;
+      --ag-light:   #e8f5e9;
+      --ag-gold:    #f59e0b;
+      --ag-earth:   #92400e;
+      --ag-dark:    #0d1b0f;
+      --ag-card-bg: #ffffff;
+      --ag-border:  #dee2e6;
+    }
+    body { font-family: 'Inter', sans-serif; background: #f0f7f0; color: #1a2e1a; }
+
+    /* Navbar */
+    .navbar-agri { background: linear-gradient(135deg, #0d1b0f 0%, #1a6b3c 100%); }
+    .navbar-agri .navbar-brand { font-weight: 800; font-size: 1.35rem; color: #fff !important; letter-spacing: -0.5px; }
+    .navbar-agri .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; }
+    .navbar-agri .nav-link:hover { color: #fff !important; }
+    .brand-leaf { color: #4caf50; margin-right: 6px; }
+
+    /* Language switcher */
+    .lang-switcher .dropdown-toggle {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.90) !important;
+      font-size: 0.78rem; font-weight: 700;
+      padding: 5px 12px; border-radius: 20px;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+    .lang-switcher .dropdown-toggle:hover { background: rgba(255,255,255,0.18); }
+    .lang-switcher .dropdown-menu {
+      min-width: 160px; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 6px 0;
+    }
+    .lang-switcher .dropdown-item {
+      font-size: 0.82rem; padding: 7px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .lang-switcher .dropdown-item.active { background: #e8f5e9; color: #1a6b3c; font-weight: 700; }
+    .lang-switcher .lang-flag { font-size: 1rem; }
+    .lang-switcher form { margin: 0; }
+
+    /* Hero */
+    .hero-section {
+      background: linear-gradient(135deg, #0d1b0f 0%, #1a4a2e 40%, #1a6b3c 100%);
+      color: #fff; padding: 80px 0 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-section::after {
+      content: ''; position: absolute; top: -50%; right: -10%;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: rgba(255,255,255,0.03); pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block; background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 16px; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
+    .hero-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.15; }
+    .hero-title span { color: #4caf50; }
+    .hero-subtitle { font-size: 1.1rem; opacity: 0.85; max-width: 560px; line-height: 1.7; }
+
+    /* Cards */
+    .card-agri {
+      border: none; border-radius: 16px; background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card-agri:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+    .card-agri .card-body { padding: 1.5rem; }
+
+    /* Metric Cards */
+    .metric-card { border-radius: 16px; padding: 1.4rem 1.5rem; color: #fff; position: relative; overflow: hidden; }
+    .metric-card::before {
+      content: ''; position: absolute; right: -20px; top: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .metric-card .metric-icon { font-size: 2rem; opacity: 0.9; }
+    .metric-card .metric-value { font-size: 1.6rem; font-weight: 800; line-height: 1.2; margin: 8px 0 4px; }
+    .metric-card .metric-label { font-size: 0.78rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .metric-card .metric-sub { font-size: 0.8rem; opacity: 0.75; margin-top: 4px; }
+
+    .mc-green  { background: linear-gradient(135deg, #1a6b3c, #28a745); }
+    .mc-blue   { background: linear-gradient(135deg, #1565c0, #1976d2); }
+    .mc-gold   { background: linear-gradient(135deg, #b45309, #f59e0b); }
+    .mc-teal   { background: linear-gradient(135deg, #00695c, #00897b); }
+    .mc-purple { background: linear-gradient(135deg, #6a1b9a, #8e24aa); }
+    .mc-red    { background: linear-gradient(135deg, #b71c1c, #e53935); }
+    .mc-orange { background: linear-gradient(135deg, #e65100, #f57c00); }
+    .mc-indigo { background: linear-gradient(135deg, #283593, #3949ab); }
+
+    /* Section headers */
+    .section-header { border-left: 4px solid #1a6b3c; padding-left: 14px; margin-bottom: 1.5rem; }
+    .section-header h4 { font-weight: 700; font-size: 1.1rem; color: #0d1b0f; margin: 0; }
+    .section-header small { color: #6c757d; font-size: 0.8rem; }
+
+    /* Progress bars */
+    .score-bar { height: 10px; border-radius: 20px; background: #e9ecef; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 20px; transition: width 1s ease; }
+
+    /* Badges */
+    .badge-pill { padding: 6px 14px; border-radius: 50px; font-weight: 600; }
+
+    /* Suitability hero */
+    .suit-hero {
+      border-radius: 20px; padding: 2.5rem 2rem;
+      background: linear-gradient(135deg, #0d1b0f, #1a4a2e);
+      color: #fff; position: relative; overflow: hidden;
+    }
+    .suit-score-circle {
+      width: 120px; height: 120px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 800;
+      border: 4px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Reason cards */
+    .reason-card { border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 0.75rem; border-left: 4px solid; }
+    .reason-critical { background: #fff5f5; border-color: #dc3545; }
+    .reason-moderate  { background: #fffbf0; border-color: #f59e0b; }
+    .reason-none      { background: #f0fdf4; border-color: #28a745; }
+
+    /* Solution table */
+    .solution-card { border-radius: 12px; border: 1px solid #e0f2e9; background: #f8fffe; padding: 1.25rem; margin-bottom: 1rem; }
+
+    /* Emotion Card */
+    .emotion-card { border-radius: 20px; padding: 2.5rem; text-align: center; }
+    .emotion-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+
+    /* Footer */
+    footer { background: #0d1b0f; color: rgba(255,255,255,0.6); padding: 24px 0; font-size: 0.85rem; margin-top: 60px; }
+    footer strong { color: #4caf50; }
+
+    /* Chart containers */
+    .chart-container { position: relative; min-height: 260px; }
+
+    /* Animated number */
+    .animate-number { transition: all 0.6s ease; }
+
+    @media (max-width: 767px) {
+      .hero-title { font-size: 1.8rem; }
+      .metric-card .metric-value { font-size: 1.3rem; }
+      .suit-score-circle { width: 90px; height: 90px; font-size: 1.5rem; }
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-agri sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="bi bi-flower1 brand-leaf"></i>KRISHI-VERSE <span style="color:#4caf50">AI</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item">
+          <a class="nav-link {% block nav_home %}{% endblock %}" href="/">
+            <i class="bi bi-house me-1"></i>{% trans "Home" %}
+          </a>
+        </li>
+        {% block nav_extra %}{% endblock %}
+
+        <!-- ── Language Switcher ── -->
+        <li class="nav-item lang-switcher ms-lg-2 mt-2 mt-lg-0">
+          {% get_current_language as CURRENT_LANG %}
+          {% get_available_languages as LANGUAGES_LIST %}
+          {% get_language_info_list for LANGUAGES_LIST as LANG_INFO %}
+
+          {# Hidden form — JS will fill language + next, then submit #}
+          <form id="lang-switch-form" action="{% url 'set_language' %}" method="post" style="display:none">
+            {% csrf_token %}
+            <input type="hidden" id="lang-switch-code" name="language" value="">
+            <input type="hidden" id="lang-switch-next" name="next" value="">
+          </form>
+
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              🌐 {{ CURRENT_LANG|upper }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% for lang in LANG_INFO %}
+              <li>
+                <button type="button"
+                        class="dropdown-item {% if lang.code == CURRENT_LANG %}active{% endif %}"
+                        onclick="kvSwitchLang('{{ lang.code }}')">
+                  <span class="lang-flag">
+                    {% if lang.code == "en" %}🇬🇧
+                    {% elif lang.code == "hi" %}🇮🇳
+                    {% elif lang.code == "pa" %}🇮🇳
+                    {% elif lang.code == "ta" %}🇮🇳
+                    {% elif lang.code == "te" %}🇮🇳
+                    {% elif lang.code == "kn" %}🇮🇳
+                    {% elif lang.code == "bn" %}🇮🇳
+                    {% elif lang.code == "mr" %}🇮🇳
+                    {% elif lang.code == "ml" %}🇮🇳
+                    {% endif %}
+                  </span>
+                  {{ lang.name_local }}
+                </button>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+        <!-- ── /Language Switcher ── -->
+
+        <script>
+        /* Language switch — strips any existing /xx/ prefix from the current
+           URL, then builds the correct target path for the selected language,
+           and finally submits the hidden set_language form so Django activates
+           the language in the session AND redirects correctly. */
+        function kvSwitchLang(code) {
+          var langPrefixes = ['hi','pa','ta','te','kn','bn','mr','ml'];
+          var path = window.location.pathname;
+
+          // Strip an existing language prefix
+          for (var i = 0; i < langPrefixes.length; i++) {
+            var p = langPrefixes[i];
+            if (path === '/' + p || path.startsWith('/' + p + '/')) {
+              path = path.slice(p.length + 1);
+              if (!path.startsWith('/')) path = '/' + path;
+              break;
+            }
+          }
+          if (!path || path === '') path = '/';
+
+          // Build target URL: English = no prefix; others = /code/path
+          var target = (code === 'en') ? path : '/' + code + path;
+
+          // Fill the hidden form and submit
+          document.getElementById('lang-switch-code').value = code;
+          document.getElementById('lang-switch-next').value = target;
+          document.getElementById('lang-switch-form').submit();
+        }
+        </script>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>
+  <div class="container text-center">
+    <p class="mb-1"><strong>KRISHI-VERSE AI</strong> — {% trans "Smart Farming Decision & Market Intelligence Platform" %}</p>
+    <p class="mb-0">{% trans "Data-driven insights for India's 140 million farming households" %} &nbsp;|&nbsp; {% trans "Made by" %} <strong>Sahil</strong></p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

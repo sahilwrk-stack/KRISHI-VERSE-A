@@ -1,0 +1,6 @@
+crop,state,seed_cost,fertilizer_cost,labour_cost,irrigation_cost,machinery_cost,other_cost,total_cost_per_hectare
+wheat,punjab,3500,4500,8000,3000,2000,1500,22500
+rice,punjab,4000,5000,9000,3500,2500,2000,26000
+maize,karnataka,2500,3000,6000,2000,1800,1000,16300
+bajra,rajasthan,2000,2500,5000,1500,1500,800,13300
+sugarcane,uttar pradesh,6000,8000,12000,5000,4000,2500,37500
