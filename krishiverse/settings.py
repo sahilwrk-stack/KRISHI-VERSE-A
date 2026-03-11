@@ -4,9 +4,14 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "krishiverse-ai-secret-key-2024-smart-farming-intelligence-platform"
+# ── Security settings ──────────────────────────────────────────────────────
+# Use DJANGO_SECRET_KEY env var in production; fall back to dev key locally.
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "krishiverse-ai-secret-key-2024-smart-farming-intelligence-platform"
+)
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -22,6 +27,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",         # serve static files (must be 2nd)
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",          # i18n: language from URL/session/cookie
     "django.middleware.common.CommonMiddleware",
@@ -89,8 +95,35 @@ TIME_ZONE = "Asia/Kolkata"
 
 # ── Static files ───────────────────────────────────────────────────────────
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Only include the custom static/ dir if it actually exists (avoids
+# collectstatic errors on a fresh clone that has no custom static assets).
+_custom_static = BASE_DIR / "static"
+STATICFILES_DIRS = [_custom_static] if _custom_static.is_dir() else []
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# WhiteNoise: compress + add cache-busting hashes to static files.
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# ── Session backend ─────────────────────────────────────────────────────────
+# Use signed-cookie sessions so no DB writes are needed at runtime.
+# This is important for Vercel serverless where the SQLite file is read-only.
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
+# ── CSRF trusted origins (required when DEBUG=False) ───────────────────────
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "DJANGO_CSRF_TRUSTED_ORIGINS",
+    "https://*.vercel.app,https://*.onrender.com,http://localhost:8000,http://127.0.0.1:8000"
+).split(",")
+
+# ── HTTPS / cookie security (Vercel terminates TLS at the edge) ────────────
+# Tell Django about the HTTPS proxy header so it knows requests are secure.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# Mark session/CSRF cookies as secure-only in production.
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
