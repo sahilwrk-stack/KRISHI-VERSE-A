@@ -11,5 +11,5 @@ urlpatterns = [
     path("analyze/",     views.analyze,            name="analyze"),    # legacy alias
     path("compare/",     views.compare,            name="compare"),    # legacy alias
 ]
-# Note: AJAX/API endpoints are registered at project level (krishiverse/urls.py)
+# Note: AJAX/API endpoints are registered at project level (agriverse/urls.py)
 # so they work without a language prefix in JavaScript fetch() calls.

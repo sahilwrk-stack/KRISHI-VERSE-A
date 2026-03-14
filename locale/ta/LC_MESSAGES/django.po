@@ -1,7 +1,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: KRISHI-VERSE AI 1.0\n"
+"Project-Id-Version: AGRIVERSE AI 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Language-Team: Tamil\n"
 "Language: ta\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "KRISHI-VERSE AI"
+msgid "AGRIVERSE AI"
 msgstr "கிருஷி-வெர்ஸ் ஏஐ"
 
 msgid "Smart Farming Intelligence Platform"

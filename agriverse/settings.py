@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Use DJANGO_SECRET_KEY env var in production; fall back to dev key locally.
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
-    "krishiverse-ai-secret-key-2024-smart-farming-intelligence-platform"
+    "agriverse-ai-secret-key-2024-smart-farming-intelligence-platform"
 )
 
 DEBUG = False
@@ -37,7 +37,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "krishiverse.urls"
+ROOT_URLCONF = "agriverse.urls"
 
 TEMPLATES = [
     {
@@ -56,7 +56,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "krishiverse.wsgi.application"
+WSGI_APPLICATION = "agriverse.wsgi.application"
 
 DATABASES = {
     "default": {

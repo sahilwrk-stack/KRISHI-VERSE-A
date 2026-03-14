@@ -1,5 +1,5 @@
 """
-Health-check script for KRISHI-VERSE AI
+Health-check script for AGRIVERSE AI
 Run: python _healthcheck.py
 """
 import os, sys, json
@@ -7,7 +7,7 @@ import os, sys, json
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "krishiverse.settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "agriverse.settings"
 
 import django
 django.setup()

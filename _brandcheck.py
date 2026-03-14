@@ -1,6 +1,6 @@
 import sys, os
 sys.stdout.reconfigure(encoding='utf-8')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'krishiverse.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'agriverse.settings')
 import django; django.setup()
 
 from django.test import Client
@@ -19,13 +19,13 @@ print()
 print('=== 2. Brand Name Check in HTML ===')
 r = c.get('/')
 html = r.content.decode('utf-8')
-kv = 'KRISHI-VERSE' in html
+kv = 'AGRIVERSE' in html
 ac = 'AgriCompare' in html
 agri = 'AGRICOMPARE' in html
 if kv and not ac and not agri:
-    print(f'  {OK} Homepage has KRISHI-VERSE AI, no old brand')
+    print(f'  {OK} Homepage has AGRIVERSE AI, no old brand')
 else:
-    print(f'  {FAIL} KRISHI-VERSE={kv}  AgriCompare={ac}  AGRICOMPARE={agri}')
+    print(f'  {FAIL} AGRIVERSE={kv}  AgriCompare={ac}  AGRICOMPARE={agri}')
 
 print()
 print('=== 3. Hindi Translation Test ===')
@@ -34,7 +34,7 @@ with translation.override('hi'):
     tests = [
         ('Suitable', 'उपयुक्त'),
         ('Happy', 'खुश'),
-        ('KRISHI-VERSE AI', 'कृषि-वर्स एआई'),
+        ('AGRIVERSE AI', 'कृषि-वर्स एआई'),
         ('Smart Farming Intelligence Platform', 'स्मार्ट कृषि बुद्धिमत्ता मंच'),
         ('Crop Suitability', 'फसल उपयुक्तता'),
         ('Market Intelligence', 'बाज़ार बुद्धिमत्ता'),
@@ -60,7 +60,7 @@ print()
 print('=== 5. Old Brand Reference Check ===')
 import glob
 old_brand_found = []
-for pattern in ['templates/**/*.html', 'core/**/*.py', 'engines/**/*.py', 'krishiverse/**/*.py']:
+for pattern in ['templates/**/*.html', 'core/**/*.py', 'engines/**/*.py', 'agriverse/**/*.py']:
     for f in glob.glob(pattern, recursive=True):
         try:
             with open(f, encoding='utf-8', errors='ignore') as fh:

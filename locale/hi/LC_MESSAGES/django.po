@@ -1,10 +1,10 @@
-# Hindi translations for KRISHI-VERSE AI
+# Hindi translations for AGRIVERSE AI
 # Copyright (C) 2024 Sahil
-# This file is distributed under the same license as the KRISHI-VERSE AI package.
+# This file is distributed under the same license as the AGRIVERSE AI package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: KRISHI-VERSE AI 1.0\n"
+"Project-Id-Version: AGRIVERSE AI 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Language-Team: Hindi\n"
 "Language: hi\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 # ── Branding ──────────────────────────────────────────────────────────────
-msgid "KRISHI-VERSE AI"
+msgid "AGRIVERSE AI"
 msgstr "कृषि-वर्स एआई"
 
 msgid "Smart Farming Intelligence Platform"
